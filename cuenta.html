@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mi cuenta — Rager</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#030609;color:#f8f8fa;font-family:Montserrat,Arial,sans-serif;min-height:100vh}
+header.top{background:#080b10;border-bottom:1px solid #191d26;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.logo{font-family:Anton,sans-serif;font-size:22px;letter-spacing:2px;color:#fff;text-decoration:none}
+.logo span{color:#ff201f}
+.back{color:#c9ced8;text-decoration:none;font-size:14px}
+.back:hover{color:#fff}
+main{max-width:520px;margin:0 auto;padding:28px 16px 60px}
+h1{font-family:Anton,sans-serif;font-size:32px;letter-spacing:1px;margin:8px 0 6px}
+h1 span{color:#ff201f}
+.intro{color:#9aa3b2;font-size:14.5px;line-height:1.6;margin-bottom:22px}
+.card{background:#0b0f16;border:1px solid #1d232f;border-radius:14px;padding:20px}
+.tabs{display:flex;gap:8px;margin-bottom:18px}
+.tabs button{flex:1;background:#12161f;color:#c9ced8;border:1px solid #232a38;border-radius:10px;padding:11px;font-family:Montserrat,sans-serif;font-size:14.5px;font-weight:700;cursor:pointer}
+.tabs button.on{background:#ff201f;border-color:#ff201f;color:#fff}
+label{display:block;font-size:13px;color:#9aa3b2;margin:12px 0 5px}
+input{width:100%;background:#12161f;border:1px solid #232a38;border-radius:10px;color:#fff;padding:12px;font-size:15px;font-family:Montserrat,sans-serif}
+.btn{display:block;width:100%;text-align:center;background:#ff201f;color:#fff;border:0;border-radius:10px;padding:13px;font-size:16px;font-weight:800;font-family:Montserrat,sans-serif;cursor:pointer;margin-top:18px;text-decoration:none}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.green{background:#25d366;color:#06301b}
+.msg{font-size:14px;line-height:1.55;margin-top:14px;min-height:20px}
+.msg.err{color:#ff8a80}.msg.ok{color:#2fbf71}.msg.info{color:#c9ced8}
+.subbox{margin-top:16px;border:1px solid #232a38;background:#10141d;border-radius:12px;padding:16px;text-align:center}
+.subbox .t{font-weight:800;font-size:16px;margin-bottom:6px}
+.subbox p{color:#9aa3b2;font-size:14px;line-height:1.55;margin:0 0 12px}
+.subbox .num{color:#9aa3b2;font-size:14px}
+.subbox .num b{display:block;color:#fff;font-size:24px;margin-top:4px;letter-spacing:.5px}
+.hidden{display:none}
+.who{font-size:15.5px;line-height:1.6}
+.who b{color:#fff}
+footer{text-align:center;color:#7d8593;font-size:13px;padding:24px 16px 40px}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="index.html">RAGER<span>.</span></a>
+  <a class="back" href="index.html">← Volver al inicio</a>
+</header>
+<main>
+  <h1>MI <span>CUENTA</span></h1>
+  <p class="intro">Tu cuenta Rager es la misma para todo: con tu correo y tu contraseña entras aquí y en el reproductor. Nunca necesitas los datos de tu línea.</p>
+
+  <div class="card">
+    <!-- Sesión ya iniciada -->
+    <div id="view-logged" class="hidden">
+      <p class="who">Sesión iniciada como <b id="who-name"></b><br><span id="who-email" style="color:#9aa3b2"></span></p>
+      <a class="btn" href="https://ver.ragerservices.net" id="btn-open-player">Abrir reproductor</a>
+      <button class="btn" id="btn-logout" type="button" style="background:#12161f;border:1px solid #232a38">Cerrar sesión</button>
+    </div>
+
+    <!-- Formularios -->
+    <div id="view-forms">
+      <div class="tabs">
+        <button id="tab-login" class="on" type="button">Iniciar sesión</button>
+        <button id="tab-reg" type="button">Crear cuenta</button>
+      </div>
+
+      <form id="form-login" autocomplete="off">
+        <label for="li-email">Correo electrónico</label>
+        <input id="li-email" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+        <label for="li-pass">Contraseña</label>
+        <input id="li-pass" type="password" autocomplete="current-password" placeholder="Tu contraseña">
+        <button class="btn" id="btn-login" type="submit">ENTRAR</button>
+        <div id="login-msg" class="msg"></div>
+      </form>
+
+      <form id="form-reg" class="hidden" autocomplete="off">
+        <label for="rg-name">Nombre completo</label>
+        <input id="rg-name" type="text" autocomplete="name" placeholder="Tu nombre">
+        <label for="rg-email">Correo electrónico</label>
+        <input id="rg-email" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+        <label for="rg-phone">Número de WhatsApp</label>
+        <input id="rg-phone" type="tel" autocomplete="tel" placeholder="Ej.: 505 8888 7777">
+        <label for="rg-pass">Contraseña (mínimo 8 caracteres)</label>
+        <input id="rg-pass" type="password" autocomplete="new-password" placeholder="Crea tu contraseña">
+        <label for="rg-pass2">Repite la contraseña</label>
+        <input id="rg-pass2" type="password" autocomplete="new-password" placeholder="Repite tu contraseña">
+        <button class="btn" id="btn-reg" type="submit">CREAR MI CUENTA</button>
+        <div id="reg-msg" class="msg"></div>
+      </form>
+
+      <!-- Aviso de suscripción: teléfono = botón a WhatsApp; PC/TV = número -->
+      <div id="subbox" class="subbox hidden">
+        <div class="t">Necesitas una suscripción</div>
+        <p id="subbox-text"></p>
+        <a id="subbox-btn" class="btn green" style="margin-top:0" href="https://wa.me/15704698339?text=Hola%2C%20quiero%20informaci%C3%B3n%20de%20la%20suscripci%C3%B3n%20de%20Rager" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+        <div id="subbox-num" class="num hidden">Escríbenos por WhatsApp a este número:<b>+1 (570) 469-8339</b></div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>Rager · Televisión en vivo, películas y series</footer>
+
+<script>
+"use strict";
+var API = "https://puente.ragerservices.net/cuentas";
+function $(id){ return document.getElementById(id); }
+function isPhone(){ return window.matchMedia("(pointer: coarse)").matches && window.innerWidth < 900; }
+function showSub(text){
+  $("subbox-text").textContent = text;
+  $("subbox-btn").classList.toggle("hidden", !isPhone());
+  $("subbox-num").classList.toggle("hidden", isPhone());
+  $("subbox").classList.remove("hidden");
+}
+function hideSub(){ $("subbox").classList.add("hidden"); }
+function setMsg(id, kind, text){ var m = $(id); m.className = "msg " + kind; m.textContent = text; }
+function api(path, method, body, token){
+  var opts = { method: method, headers: {} };
+  if(body){ opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+  if(token) opts.headers["Authorization"] = "Bearer " + token;
+  return fetch(API + path, opts).then(function(r){
+    return r.json().catch(function(){ return {}; }).then(function(j){ return { ok: r.ok, j: j }; });
+  });
+}
+function showLogged(j){
+  localStorage.setItem("rager_site_token", j.token || localStorage.getItem("rager_site_token") || "");
+  $("who-name").textContent = j.name || "";
+  $("who-email").textContent = j.email || "";
+  var tok = localStorage.getItem("rager_site_token");
+  $("btn-open-player").href = "https://ver.ragerservices.net/" + (tok ? "#acceso=" + encodeURIComponent(tok) : "");
+  $("view-forms").classList.add("hidden");
+  $("view-logged").classList.remove("hidden");
+}
+function showForms(){
+  $("view-logged").classList.add("hidden");
+  $("view-forms").classList.remove("hidden");
+}
+function setTab(reg){
+  $("tab-login").classList.toggle("on", !reg);
+  $("tab-reg").classList.toggle("on", reg);
+  $("form-login").classList.toggle("hidden", reg);
+  $("form-reg").classList.toggle("hidden", !reg);
+  hideSub();
+}
+$("tab-login").addEventListener("click", function(){ setTab(false); });
+$("tab-reg").addEventListener("click", function(){ setTab(true); });
+
+$("form-login").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  hideSub();
+  var email = $("li-email").value.trim(), pass = $("li-pass").value;
+  if(!email || !pass){ setMsg("login-msg", "err", "Escribe tu correo y tu contraseña."); return; }
+  var btn = $("btn-login"); btn.disabled = true; btn.textContent = "Entrando…";
+  api("/login", "POST", { email: email, password: pass }).then(function(res){
+    btn.disabled = false; btn.textContent = "ENTRAR";
+    if(res.ok){ setMsg("login-msg", "ok", ""); showLogged(res.j); return; }
+    var code = res.j && res.j.code;
+    if(code === "PENDING") showSub("Tu cuenta está pendiente de activación y todavía no tiene una suscripción activa. Si necesitas adquirirla o pedir tu activación:");
+    else if(code === "NO_SERVICE") showSub("Esta cuenta no tiene una suscripción IPTV asociada. Para adquirir tu suscripción:");
+    else if(code === "DISABLED") showSub("Tu cuenta está desactivada. Para adquirir o reactivar tu suscripción:");
+    else setMsg("login-msg", "err", (res.j && res.j.error) || "No se pudo iniciar sesión.");
+  }).catch(function(){
+    btn.disabled = false; btn.textContent = "ENTRAR";
+    setMsg("login-msg", "err", "No se pudo conectar. Revisa tu conexión e inténtalo de nuevo.");
+  });
+});
+
+$("form-reg").addEventListener("submit", function(ev){
+  ev.preventDefault();
+  hideSub();
+  var name = $("rg-name").value.trim(), email = $("rg-email").value.trim(),
+      phone = $("rg-phone").value.trim(), p1 = $("rg-pass").value, p2 = $("rg-pass2").value;
+  if(name.length < 2 || !email){ setMsg("reg-msg", "err", "Escribe tu nombre y tu correo."); return; }
+  if(p1.length < 8){ setMsg("reg-msg", "err", "La contraseña debe tener al menos 8 caracteres."); return; }
+  if(p1 !== p2){ setMsg("reg-msg", "err", "Las contraseñas no coinciden."); return; }
+  var btn = $("btn-reg"); btn.disabled = true; btn.textContent = "Creando…";
+  api("/registro", "POST", { name: name, email: email, phone: phone, password: p1 }).then(function(res){
+    btn.disabled = false; btn.textContent = "CREAR MI CUENTA";
+    if(res.ok){
+      setMsg("reg-msg", "ok", "¡Cuenta creada! Queda pendiente de activación: en cuanto confirmemos tu suscripción la activamos y podrás entrar al reproductor con este mismo correo y contraseña.");
+      showSub("¿Quieres acelerar tu activación o adquirir tu suscripción ahora?");
+      return;
+    }
+    setMsg("reg-msg", "err", (res.j && res.j.error) || "No se pudo crear la cuenta.");
+  }).catch(function(){
+    btn.disabled = false; btn.textContent = "CREAR MI CUENTA";
+    setMsg("reg-msg", "err", "No se pudo conectar. Revisa tu conexión e inténtalo de nuevo.");
+  });
+});
+
+$("btn-logout").addEventListener("click", function(){
+  var tok = localStorage.getItem("rager_site_token");
+  if(tok) api("/logout", "POST", {}, tok).catch(function(){});
+  localStorage.removeItem("rager_site_token");
+  showForms();
+});
+
+// Si ya había sesión en este navegador, se muestra directo.
+(function(){
+  var tok = localStorage.getItem("rager_site_token");
+  if(!tok) return;
+  api("/me", "GET", null, tok).then(function(res){
+    if(res.ok) showLogged(res.j);
+    else localStorage.removeItem("rager_site_token");
+  }).catch(function(){});
+})();
+</script>
+</body>
+</html>
