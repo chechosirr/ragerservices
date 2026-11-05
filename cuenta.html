@@ -302,6 +302,11 @@ $("btn-olvide").addEventListener("click", function(){
   api("/olvide", "POST", { email: email }).then(function(res){
     btn.disabled = false; btn.textContent = "Solicitar nueva contraseña";
     if(res.ok){
+      if(res.j && res.j.mail){
+        setMsg("ov-msg", "ok", "Te enviamos un enlace a tu correo para poner la contraseña nueva. Caduca en 1 hora; revisa también la carpeta de spam.");
+        $("ov-wa").classList.add("hidden");
+        return;
+      }
       setMsg("ov-msg", "ok", "Solicitud registrada. Te restablecemos la contraseña en cuanto la confirmemos.");
       $("ov-wa-btn").classList.toggle("hidden", !isPhone());
       $("ov-wa-num").classList.toggle("hidden", isPhone());
