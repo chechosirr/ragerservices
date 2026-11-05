@@ -59,6 +59,32 @@ footer{text-align:center;color:#7d8593;font-size:13px;padding:24px 16px 40px}
     <!-- Sesión ya iniciada -->
     <div id="view-logged" class="hidden">
       <p class="who">Sesión iniciada como <b id="who-name"></b><br><span id="who-email" style="color:#9aa3b2"></span></p>
+
+      <div style="border-top:1px solid #232a38;margin-top:18px;padding-top:16px;text-align:left">
+        <h3 style="margin:0 0 4px;font-size:17px">Información de cuenta</h3>
+        <p style="color:#9aa3b2;font-size:13.5px;margin:0 0 6px">Aquí puedes cambiar tu correo y tu contraseña. Tu servicio IPTV no cambia: sigue asociado a tu cuenta.</p>
+
+        <label>Tu correo</label>
+        <p style="margin:2px 0 8px"><b id="info-email">—</b></p>
+        <label for="ic-email">Correo nuevo</label>
+        <input id="ic-email" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+        <label for="ic-pass">Tu contraseña actual (para confirmar)</label>
+        <input id="ic-pass" type="password" autocomplete="current-password" placeholder="Tu contraseña actual">
+        <button class="btn" id="btn-cambiar-correo" type="button">Cambiar correo</button>
+        <div id="ic-msg" class="msg"></div>
+
+        <label style="margin-top:18px">Tu contraseña</label>
+        <p style="margin:2px 0 8px;color:#9aa3b2">•••••••• <span style="font-size:13px">(no se muestra por seguridad)</span></p>
+        <label for="pc-cur">Contraseña actual</label>
+        <input id="pc-cur" type="password" autocomplete="current-password" placeholder="Tu contraseña actual">
+        <label for="pc-new">Contraseña nueva (mínimo 8 caracteres)</label>
+        <input id="pc-new" type="password" autocomplete="new-password" placeholder="Crea tu contraseña nueva">
+        <label for="pc-new2">Repite la contraseña nueva</label>
+        <input id="pc-new2" type="password" autocomplete="new-password" placeholder="Repite tu contraseña nueva">
+        <button class="btn" id="btn-cambiar-clave" type="button">Cambiar contraseña</button>
+        <div id="pc-msg" class="msg"></div>
+      </div>
+
       <a class="btn" href="https://ver.ragerservices.net" id="btn-open-player">Abrir reproductor</a>
       <button class="btn" id="btn-logout" type="button" style="background:#12161f;border:1px solid #232a38">Cerrar sesión</button>
     </div>
@@ -79,9 +105,24 @@ footer{text-align:center;color:#7d8593;font-size:13px;padding:24px 16px 40px}
         <div id="login-msg" class="msg"></div>
       </form>
 
+      <p style="text-align:center;margin-top:14px"><a href="#" id="link-olvide" style="color:#9aa3b2;font-size:14px">¿Olvidaste tu contraseña?</a></p>
+      <div id="olvide-box" class="hidden" style="border-top:1px solid #232a38;margin-top:14px;padding-top:14px;text-align:left">
+        <label for="ov-email">Tu correo</label>
+        <input id="ov-email" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+        <button class="btn" id="btn-olvide" type="button">Solicitar nueva contraseña</button>
+        <div id="ov-msg" class="msg"></div>
+        <div id="ov-wa" class="hidden" style="text-align:center;margin-top:10px">
+          <p style="color:#9aa3b2;font-size:14px;margin:0 0 10px">Para restablecerla ya mismo, escríbenos por WhatsApp y te pasamos la nueva:</p>
+          <a id="ov-wa-btn" class="btn green" style="margin-top:0" href="https://wa.me/15704698339?text=Hola%2C%20olvid%C3%A9%20mi%20contrase%C3%B1a%20de%20Rager" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+          <div id="ov-wa-num" class="hidden" style="color:#9aa3b2;font-size:14px">Escríbenos por WhatsApp a este número:<b style="display:block;color:#fff;font-size:24px;margin-top:4px">+1 (570) 469-8339</b></div>
+        </div>
+      </div>
+
       <form id="form-reg" class="hidden" autocomplete="off">
-        <label for="rg-name">Nombre completo</label>
-        <input id="rg-name" type="text" autocomplete="name" placeholder="Tu nombre">
+        <label for="rg-name">Nombre</label>
+        <input id="rg-name" type="text" autocomplete="given-name" placeholder="Tu nombre">
+        <label for="rg-lastname">Apellido</label>
+        <input id="rg-lastname" type="text" autocomplete="family-name" placeholder="Tu apellido">
         <label for="rg-email">Correo electrónico</label>
         <input id="rg-email" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com">
         <label for="rg-phone">Número de WhatsApp</label>
@@ -134,6 +175,7 @@ function showLogged(j){
   localStorage.setItem("rager_site_token", j.token || localStorage.getItem("rager_site_token") || "");
   $("who-name").textContent = j.name || "";
   $("who-email").textContent = j.email || "";
+  $("info-email").textContent = j.email || "";
   var tok = localStorage.getItem("rager_site_token");
   $("btn-open-player").href = "https://ver.ragerservices.net/" + (tok ? "#acceso=" + encodeURIComponent(tok) : "");
   $("view-forms").classList.add("hidden");
@@ -177,13 +219,13 @@ $("form-login").addEventListener("submit", function(ev){
 $("form-reg").addEventListener("submit", function(ev){
   ev.preventDefault();
   hideSub();
-  var name = $("rg-name").value.trim(), email = $("rg-email").value.trim(),
+  var name = $("rg-name").value.trim(), lastname = $("rg-lastname").value.trim(), email = $("rg-email").value.trim(),
       phone = $("rg-phone").value.trim(), p1 = $("rg-pass").value, p2 = $("rg-pass2").value;
-  if(name.length < 2 || !email){ setMsg("reg-msg", "err", "Escribe tu nombre y tu correo."); return; }
+  if(name.length < 2 || lastname.length < 2 || !email){ setMsg("reg-msg", "err", "Escribe tu nombre, tu apellido y tu correo."); return; }
   if(p1.length < 8){ setMsg("reg-msg", "err", "La contraseña debe tener al menos 8 caracteres."); return; }
   if(p1 !== p2){ setMsg("reg-msg", "err", "Las contraseñas no coinciden."); return; }
   var btn = $("btn-reg"); btn.disabled = true; btn.textContent = "Creando…";
-  api("/registro", "POST", { name: name, email: email, phone: phone, password: p1 }).then(function(res){
+  api("/registro", "POST", { name: name, lastname: lastname, email: email, phone: phone, password: p1 }).then(function(res){
     btn.disabled = false; btn.textContent = "CREAR MI CUENTA";
     if(res.ok){
       setMsg("reg-msg", "ok", "¡Cuenta creada! Queda pendiente de activación: en cuanto confirmemos tu suscripción la activamos y podrás entrar al reproductor con este mismo correo y contraseña.");
@@ -197,11 +239,80 @@ $("form-reg").addEventListener("submit", function(ev){
   });
 });
 
+$("btn-cambiar-correo").addEventListener("click", function(){
+  var tok = localStorage.getItem("rager_site_token");
+  var email = $("ic-email").value.trim(), cur = $("ic-pass").value;
+  if(!email){ setMsg("ic-msg", "err", "Escribe tu correo nuevo."); return; }
+  if(!cur){ setMsg("ic-msg", "err", "Escribe tu contraseña actual para confirmar el cambio."); return; }
+  var btn = $("btn-cambiar-correo"); btn.disabled = true; btn.textContent = "Guardando…";
+  api("/cambiar-correo", "POST", { current: cur, email: email }, tok).then(function(res){
+    btn.disabled = false; btn.textContent = "Cambiar correo";
+    if(res.ok){
+      $("who-email").textContent = res.j.email;
+      $("info-email").textContent = res.j.email;
+      $("ic-email").value = ""; $("ic-pass").value = "";
+      setMsg("ic-msg", "ok", "Correo actualizado. La próxima vez entra con tu correo nuevo.");
+      return;
+    }
+    setMsg("ic-msg", "err", (res.j && res.j.error) || "No se pudo cambiar el correo.");
+  }).catch(function(){
+    btn.disabled = false; btn.textContent = "Cambiar correo";
+    setMsg("ic-msg", "err", "No se pudo conectar. Revisa tu conexión e inténtalo de nuevo.");
+  });
+});
+
+$("btn-cambiar-clave").addEventListener("click", function(){
+  var tok = localStorage.getItem("rager_site_token");
+  var cur = $("pc-cur").value, n1 = $("pc-new").value, n2 = $("pc-new2").value;
+  if(!cur){ setMsg("pc-msg", "err", "Escribe tu contraseña actual."); return; }
+  if(n1.length < 8){ setMsg("pc-msg", "err", "La contraseña nueva debe tener al menos 8 caracteres."); return; }
+  if(n1 !== n2){ setMsg("pc-msg", "err", "Las contraseñas nuevas no coinciden."); return; }
+  var btn = $("btn-cambiar-clave"); btn.disabled = true; btn.textContent = "Guardando…";
+  api("/cambiar-clave", "POST", { current: cur, "new": n1 }, tok).then(function(res){
+    btn.disabled = false; btn.textContent = "Cambiar contraseña";
+    if(res.ok){
+      $("pc-cur").value = ""; $("pc-new").value = ""; $("pc-new2").value = "";
+      setMsg("pc-msg", "ok", "Contraseña actualizada.");
+      return;
+    }
+    setMsg("pc-msg", "err", (res.j && res.j.error) || "No se pudo cambiar la contraseña.");
+  }).catch(function(){
+    btn.disabled = false; btn.textContent = "Cambiar contraseña";
+    setMsg("pc-msg", "err", "No se pudo conectar. Revisa tu conexión e inténtalo de nuevo.");
+  });
+});
+
 $("btn-logout").addEventListener("click", function(){
   var tok = localStorage.getItem("rager_site_token");
   if(tok) api("/logout", "POST", {}, tok).catch(function(){});
   localStorage.removeItem("rager_site_token");
   showForms();
+});
+
+$("link-olvide").addEventListener("click", function(ev){
+  ev.preventDefault();
+  var box = $("olvide-box");
+  box.classList.toggle("hidden");
+  if(!$("ov-email").value) $("ov-email").value = $("li-email").value.trim();
+});
+$("btn-olvide").addEventListener("click", function(){
+  var email = $("ov-email").value.trim();
+  if(!email){ setMsg("ov-msg", "err", "Escribe el correo de tu cuenta."); return; }
+  var btn = $("btn-olvide"); btn.disabled = true; btn.textContent = "Enviando…";
+  api("/olvide", "POST", { email: email }).then(function(res){
+    btn.disabled = false; btn.textContent = "Solicitar nueva contraseña";
+    if(res.ok){
+      setMsg("ov-msg", "ok", "Solicitud registrada. Te restablecemos la contraseña en cuanto la confirmemos.");
+      $("ov-wa-btn").classList.toggle("hidden", !isPhone());
+      $("ov-wa-num").classList.toggle("hidden", isPhone());
+      $("ov-wa").classList.remove("hidden");
+      return;
+    }
+    setMsg("ov-msg", "err", (res.j && res.j.error) || "No se pudo registrar la solicitud.");
+  }).catch(function(){
+    btn.disabled = false; btn.textContent = "Solicitar nueva contraseña";
+    setMsg("ov-msg", "err", "No se pudo conectar. Revisa tu conexión e inténtalo de nuevo.");
+  });
 });
 
 // Si ya había sesión en este navegador, se muestra directo.

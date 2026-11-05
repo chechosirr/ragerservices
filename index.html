@@ -31,7 +31,7 @@
 <style>
 /* ===== Apertura con el logo y puerta de sesión (2026-11-04, pedido de Sergio): el logo del ojo en el centro 3 s y vuela a su lugar; sin sesión aparece suave la sección de inicio de sesión y el menú no funciona hasta entrar; al entrar, a la página principal ===== */
 #rg-splash{position:fixed;inset:0;z-index:200;background:#030609;display:flex;align-items:center;justify-content:center;cursor:pointer;animation:rgKill .6s ease 9.5s both}
-#rg-splash-logo{width:min(58vw,320px);height:auto;object-fit:contain;transition:transform .9s ease}
+#rg-splash-logo{width:min(40.6vw,224px);height:auto;object-fit:contain;transition:transform .9s ease}
 #rg-splash.rg-fading{opacity:0;transition:opacity .35s ease;pointer-events:none}
 @keyframes rgKill{to{opacity:0;visibility:hidden}}
 body.rg-gated{overflow:hidden}
@@ -95,10 +95,13 @@ body.rg-reveal main{animation:rgIn 1.05s ease both}
         <input id="rg-li-pass" type="password" autocomplete="current-password" placeholder="Tu contraseña">
         <button class="rg-btn" id="rg-btn-login" type="submit">ENTRAR</button>
         <div id="rg-login-msg" class="rg-msg"></div>
+        <p style="text-align:center;margin-top:12px"><a href="cuenta.html" style="color:#9aa3b2;font-size:14px">¿Olvidaste tu contraseña?</a></p>
       </form>
       <form id="rg-form-reg" class="rg-hidden" autocomplete="off">
-        <label for="rg-rg-name">Nombre completo</label>
-        <input id="rg-rg-name" type="text" autocomplete="name" placeholder="Tu nombre">
+        <label for="rg-rg-name">Nombre</label>
+        <input id="rg-rg-name" type="text" autocomplete="given-name" placeholder="Tu nombre">
+        <label for="rg-rg-lastname">Apellido</label>
+        <input id="rg-rg-lastname" type="text" autocomplete="family-name" placeholder="Tu apellido">
         <label for="rg-rg-email">Correo electrónico</label>
         <input id="rg-rg-email" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com">
         <label for="rg-rg-phone">Número de WhatsApp</label>
@@ -323,13 +326,13 @@ window.__rgMain = true;
   });
   $('rg-form-reg').addEventListener('submit', function(ev){
     ev.preventDefault(); hideSub();
-    var name = $('rg-rg-name').value.trim(), email = $('rg-rg-email').value.trim(),
+    var name = $('rg-rg-name').value.trim(), lastname = $('rg-rg-lastname').value.trim(), email = $('rg-rg-email').value.trim(),
         phone = $('rg-rg-phone').value.trim(), p1 = $('rg-rg-pass').value, p2 = $('rg-rg-pass2').value;
-    if(name.length < 2 || !email){ setMsg('rg-reg-msg', 'err', 'Escribe tu nombre y tu correo.'); return; }
+    if(name.length < 2 || lastname.length < 2 || !email){ setMsg('rg-reg-msg', 'err', 'Escribe tu nombre, tu apellido y tu correo.'); return; }
     if(p1.length < 8){ setMsg('rg-reg-msg', 'err', 'La contraseña debe tener al menos 8 caracteres.'); return; }
     if(p1 !== p2){ setMsg('rg-reg-msg', 'err', 'Las contraseñas no coinciden.'); return; }
     var btn = $('rg-btn-reg'); btn.disabled = true; btn.textContent = 'Creando…';
-    api('/registro', 'POST', { name: name, email: email, phone: phone, password: p1 }).then(function(res){
+    api('/registro', 'POST', { name: name, lastname: lastname, email: email, phone: phone, password: p1 }).then(function(res){
       btn.disabled = false; btn.textContent = 'CREAR MI CUENTA';
       if(res.ok){
         setMsg('rg-reg-msg', 'ok', '¡Cuenta creada! Queda pendiente de activación: en cuanto confirmemos tu suscripción la activamos y podrás entrar al reproductor con este mismo correo y contraseña.');
