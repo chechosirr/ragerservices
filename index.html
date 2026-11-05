@@ -343,6 +343,11 @@ window.__rgMain = true;
     api('/registro', 'POST', { name: name, lastname: lastname, email: email, phone: phone, password: p1 }).then(function(res){
       btn.disabled = false; btn.textContent = 'CREAR MI CUENTA';
       if(res.ok){
+        if(res.j && res.j.token){
+          try{ localStorage.setItem('rager_site_token', res.j.token); }catch(e){}
+          exitGate();
+          return;
+        }
         setMsg('rg-reg-msg', 'ok', '¡Cuenta creada! Queda pendiente de activación: en cuanto confirmemos tu suscripción la activamos y podrás entrar al reproductor con este mismo correo y contraseña.');
         showSub('¿Quieres acelerar tu activación o adquirir tu suscripción ahora?');
         return;
@@ -389,6 +394,8 @@ window.__rgMain = true;
   function maxCalc(){ return Math.max(0, el.clientWidth - knob.offsetWidth - 12); }
   function setX(x){ curX = x; knob.style.transform = 'translateX(' + x + 'px)'; txt.style.clipPath = 'inset(0 0 0 ' + (58 + x) + 'px)'; }
   function go(){ if(done) return; done = true; knob.style.transition = 'transform .15s'; txt.style.transition = 'clip-path .15s'; setX(maxCalc()); setTimeout(function(){ var t = ''; try{ t = localStorage.getItem('rager_site_token') || ''; }catch(_){ } window.location.href = 'https://ver.ragerservices.net' + (t ? '/#acceso=' + encodeURIComponent(t) : ''); }, 200); }
+  function resetSlide(){ done = false; dragging = false; knob.style.transition = 'none'; txt.style.transition = 'none'; setX(0); requestAnimationFrame(function(){ knob.style.transition = ''; txt.style.transition = ''; }); }
+  window.addEventListener('pageshow', resetSlide);
   el.addEventListener('pointerdown', function(e){ if(done) return; dragging = true; startX = e.clientX - curX; knob.style.transition = ''; txt.style.transition = ''; try{ el.setPointerCapture(e.pointerId); }catch(_){} });
   el.addEventListener('pointermove', function(e){ if(!dragging) return; var x = e.clientX - startX; var mx = maxCalc(); if(x < 0) x = 0; if(x > mx) x = mx; setX(x); });
   function endDrag(){ if(!dragging) return; dragging = false; if(curX > maxCalc() * 0.82){ go(); } else { knob.style.transition = 'transform .25s'; txt.style.transition = 'clip-path .25s'; setX(0); setTimeout(function(){ knob.style.transition = ''; txt.style.transition = ''; }, 260); } }
