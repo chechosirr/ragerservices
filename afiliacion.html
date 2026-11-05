@@ -43,14 +43,15 @@ footer{text-align:center;color:#4b5363;font-size:12px;padding:20px;border-top:1p
 .menu-close{right:max(12px,env(safe-area-inset-right));top:max(12px,env(safe-area-inset-top));z-index:1;width:42px;height:42px;font-size:28px}
 }
 </style>
+<style>@keyframes rgSoftIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}main{animation:rgSoftIn .45s ease both}.menu-panel{display:flex;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .32s ease,visibility 0s linear .32s}.menu-panel.open{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .32s ease}.menu-panel .menu-links{transform:translateY(12px);transition:transform .32s ease}.menu-panel.open .menu-links{transform:translateY(0)}</style>
 </head>
 <body>
 <header class="top" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center">
   <span></span>
-  <a class="logo" href="index.html" aria-label="Inicio" style="justify-self:center"><img src="https://puente.ragerservices.net/assets/logo.png" alt="Rager TV" style="height:38px;display:block"></a>
+  <a aria-label='Inicio' class='logo' href='/' style='justify-self:center'><img src="assets/logo.png" alt="Rager TV" style="height:38px;display:block"></a>
   <button class="menu-btn" id="menuOpen" aria-label="Abrir menú" style="justify-self:end"><span></span></button>
 </header>
-<div class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-label="Menú del sitio"><button class="menu-close" id="menuClose" aria-label="Cerrar menú">×</button><nav class="menu-links"><a href="index.html">Inicio</a><a href="index.html#guia">Guía de Instalación</a><a href="guia-tv.html">Guía TV</a><a href="afiliacion.html">Afiliación</a></nav></div>
+<div class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-label="Menú del sitio"><button class="menu-close" id="menuClose" aria-label="Cerrar menú">×</button><nav class="menu-links"><a href="index.html">Inicio</a><a href="cuenta.html">Mi cuenta</a><a href="index.html#guia">Guía de Instalación</a><a href="https://ver.ragerservices.net" target="_blank" rel="noopener">Ver contenido</a><a href="afiliacion.html">Afiliación</a><a href="#" id="menuLogout" style="display:none;color:#ff201f">Cerrar sesión</a></nav></div>
 
 <main>
   <h1>Afiliación <span>Rager</span></h1>
@@ -67,5 +68,7 @@ footer{text-align:center;color:#4b5363;font-size:12px;padding:20px;border-top:1p
 </main>
 <footer>Rager TV · Programa de afiliación</footer>
 <script>(function(){var panel=document.getElementById('menuPanel'),open=document.getElementById('menuOpen'),close=document.getElementById('menuClose');function setMenu(show){panel.classList.toggle('open',show);document.body.style.overflow=show?'hidden':'';if(show)close.focus()}open.addEventListener('click',function(){setMenu(true)});close.addEventListener('click',function(){setMenu(false)});document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false)});panel.addEventListener('click',function(e){if(e.target===panel||e.target.tagName==='A')setMenu(false)})})();</script>
+<script>(function(){var lo=document.getElementById('menuLogout');if(!lo)return;var t='';try{t=localStorage.getItem('rager_site_token')||''}catch(e){}if(!t)return;fetch('https://puente.ragerservices.net/cuentas/me',{headers:{'Authorization':'Bearer '+t}}).then(function(r){if(r.ok){lo.style.display=''}else{try{localStorage.removeItem('rager_site_token')}catch(e){}}}).catch(function(){lo.style.display=''});lo.addEventListener('click',function(e){e.preventDefault();var fin=false;function done(){if(fin)return;fin=true;try{localStorage.removeItem('rager_site_token')}catch(err){}location.href='index.html'}try{fetch('https://puente.ragerservices.net/cuentas/logout',{method:'POST',headers:{'Authorization':'Bearer '+t,'Content-Type':'application/json'},body:'{}'}).then(done).catch(done)}catch(err){done()}setTimeout(done,1500)});})();</script>
 </body>
 </html>
+<script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="08d6c664-5731-4bfa-9a2f-e8f33c626dd7" data-app-host="app.netlify.com" data-account-tier="free"></script>
