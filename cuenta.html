@@ -111,7 +111,7 @@ footer{text-align:center;color:#7d8593;font-size:13px;padding:24px 16px 40px}
             <div class="dato"><div><div class="k">WhatsApp</div><div class="v" id="d-phone">—</div></div><button class="mini" type="button" data-ed="wa">Editar</button></div>
             <div class="editor" data-editor="wa">
               <label>Número de WhatsApp</label>
-              <div style="display:flex;gap:8px"><select id="ed-wa-code" class="pv-code" style="flex:0 0 76px;width:76px"></select><input id="ed-wa-num" type="tel" style="flex:1"></div>
+              <div style="display:flex;gap:8px"><input id="ed-wa-code" class="pv-code" type="text" inputmode="tel" autocomplete="off" list="rg-cc-list" style="flex:0 0 76px;width:76px" value="+505"><input id="ed-wa-num" type="tel" style="flex:1"></div>
               <button class="btn" id="btn-ed-wa" type="button">Guardar</button><div class="msg" id="msg-wa"></div>
             </div>
             <div class="dato"><div><div class="k">Correo</div><div class="v" id="info-email">—</div></div><button class="mini" type="button" data-ed="correo">Editar</button></div>
@@ -416,19 +416,29 @@ $("btn-olvide").addEventListener("click", function(){
 <script>
 var PAISES = [["Afganistán","93"],["Albania","355"],["Alemania","49"],["Andorra","376"],["Angola","244"],["Arabia Saudita","966"],["Argelia","213"],["Argentina","54"],["Armenia","374"],["Australia","61"],["Austria","43"],["Azerbaiyán","994"],["Bahamas","1"],["Bangladés","880"],["Barbados","1"],["Baréin","973"],["Bélgica","32"],["Belice","501"],["Benín","229"],["Bermudas","1"],["Bielorrusia","375"],["Bolivia","591"],["Bosnia y Herzegovina","387"],["Botsuana","267"],["Brasil","55"],["Brunéi","673"],["Bulgaria","359"],["Burkina Faso","226"],["Burundi","257"],["Bután","975"],["Cabo Verde","238"],["Camboya","855"],["Camerún","237"],["Canadá","1"],["Catar","974"],["Chad","235"],["Chile","56"],["China","86"],["Chipre","357"],["Colombia","57"],["Comoras","269"],["Congo","242"],["Congo (R. D.)","243"],["Corea del Norte","850"],["Corea del Sur","82"],["Costa de Marfil","225"],["Costa Rica","506"],["Croacia","385"],["Cuba","53"],["Curazao","599"],["Dinamarca","45"],["Dominica","1"],["Ecuador","593"],["Egipto","20"],["El Salvador","503"],["Emiratos Árabes Unidos","971"],["Eritrea","291"],["Eslovaquia","421"],["Eslovenia","386"],["España","34"],["Estados Unidos","1"],["Estonia","372"],["Etiopía","251"],["Filipinas","63"],["Finlandia","358"],["Fiyi","679"],["Francia","33"],["Gabón","241"],["Gambia","220"],["Georgia","995"],["Ghana","233"],["Gibraltar","350"],["Granada","1"],["Grecia","30"],["Groenlandia","299"],["Guadalupe","590"],["Guatemala","502"],["Guyana","592"],["Guyana Francesa","594"],["Guinea","224"],["Guinea Ecuatorial","240"],["Guinea-Bisáu","245"],["Haití","509"],["Honduras","504"],["Hong Kong","852"],["Hungría","36"],["India","91"],["Indonesia","62"],["Irak","964"],["Irán","98"],["Irlanda","353"],["Islandia","354"],["Islas Caimán","1"],["Israel","972"],["Italia","39"],["Jamaica","1"],["Japón","81"],["Jordania","962"],["Kazajistán","7"],["Kenia","254"],["Kirguistán","996"],["Kuwait","965"],["Laos","856"],["Lesoto","266"],["Letonia","371"],["Líbano","961"],["Liberia","231"],["Libia","218"],["Liechtenstein","423"],["Lituania","370"],["Luxemburgo","352"],["Macao","853"],["Macedonia del Norte","389"],["Madagascar","261"],["Malasia","60"],["Malaui","265"],["Maldivas","960"],["Malí","223"],["Malta","356"],["Marruecos","212"],["Martinica","596"],["Mauritania","222"],["Mauricio","230"],["México","52"],["Micronesia","691"],["Moldavia","373"],["Mónaco","377"],["Mongolia","976"],["Montenegro","382"],["Mozambique","258"],["Myanmar","95"],["Namibia","264"],["Nepal","977"],["Nicaragua","505"],["Níger","227"],["Nigeria","234"],["Noruega","47"],["Nueva Zelanda","64"],["Omán","968"],["Países Bajos","31"],["Pakistán","92"],["Palestina","970"],["Panamá","507"],["Papúa Nueva Guinea","675"],["Paraguay","595"],["Perú","51"],["Polonia","48"],["Portugal","351"],["Puerto Rico","1"],["Reino Unido","44"],["República Centroafricana","236"],["República Checa","420"],["República Dominicana","1"],["Reunión","262"],["Ruanda","250"],["Rumania","40"],["Rusia","7"],["Samoa","685"],["San Cristóbal y Nieves","1"],["San Marino","378"],["San Vicente y las Granadinas","1"],["Santa Lucía","1"],["Santo Tomé y Príncipe","239"],["Senegal","221"],["Serbia","381"],["Seychelles","248"],["Sierra Leona","232"],["Singapur","65"],["Siria","963"],["Somalia","252"],["Sri Lanka","94"],["Esuatini","268"],["Sudáfrica","27"],["Sudán","249"],["Sudán del Sur","211"],["Suecia","46"],["Suiza","41"],["Surinam","597"],["Tailandia","66"],["Taiwán","886"],["Tanzania","255"],["Tayikistán","992"],["Timor Oriental","670"],["Togo","228"],["Tonga","676"],["Trinidad y Tobago","1"],["Túnez","216"],["Turkmenistán","993"],["Turquía","90"],["Ucrania","380"],["Uganda","256"],["Uruguay","598"],["Uzbekistán","998"],["Vanuatu","678"],["Venezuela","58"],["Vietnam","84"],["Yemen","967"],["Yibuti","253"],["Zambia","260"],["Zimbabue","263"]];
 ;(function(){
-  // Telefono del registro separado: codigo de pais + numero
+  // Telefono separado: codigo de pais en campo corto con sugerencias
+  // (al elegir queda solo «+codigo», sin nombre del pais) + numero.
   var inp = document.getElementById("rg-phone");
   if(inp){
+    if(!document.getElementById("rg-cc-list")){
+      var dl = document.createElement("datalist"); dl.id = "rg-cc-list";
+      dl.innerHTML = PAISES.map(function(p){ return '<option value="+' + p[1] + '">' + p[0] + "</option>"; }).join("");
+      document.body.appendChild(dl);
+    }
     var wrap = document.createElement("div");
     wrap.style.display = "flex"; wrap.style.gap = "8px";
-    var sel = document.createElement("select");
+    var sel = document.createElement("input");
+    sel.type = "text"; sel.inputMode = "tel"; sel.setAttribute("autocomplete", "off");
     sel.id = "rg-phone-code"; sel.className = "pv-code"; sel.style.flex = "0 0 76px"; sel.style.width = "76px";
-    sel.innerHTML = PAISES.map(function(p){ return '<option value="' + p[1] + '">' + "+" + p[1] + " \u00B7 " + p[0] + "</option>"; }).join("");
-    sel.value = "505";
+    sel.setAttribute("list", "rg-cc-list");
+    sel.value = "+505";
     var num = document.createElement("input");
     num.type = "tel"; num.placeholder = "Número"; num.style.flex = "1";
-    function sync(){ inp.value = num.value.trim() ? ("+" + sel.value + " " + num.value.trim()) : ""; }
-    sel.addEventListener("change", sync); num.addEventListener("input", sync);
+    function digits(){ return (sel.value || "").replace(/\D/g, "") || "505"; }
+    function sync(){ inp.value = num.value.trim() ? ("+" + digits() + " " + num.value.trim()) : ""; }
+    sel.addEventListener("input", sync); sel.addEventListener("change", sync);
+    sel.addEventListener("blur", function(){ sel.value = "+" + digits(); sync(); });
+    num.addEventListener("input", sync);
     inp.style.display = "none";
     inp.parentNode.insertBefore(wrap, inp);
     wrap.appendChild(sel); wrap.appendChild(num);
@@ -462,7 +472,7 @@ var PAISES = [["Afganistán","93"],["Albania","355"],["Alemania","49"],["Andorra
     var en = document.getElementById("ed-nombre"); if(en) en.value = cur.name || "";
     var ea = document.getElementById("ed-apellido"); if(ea) ea.value = cur.lastName || "";
     var s = splitPhone(cur.phone || "");
-    var sel = document.getElementById("ed-wa-code"); if(sel) sel.value = s.code;
+    var sel = document.getElementById("ed-wa-code"); if(sel) sel.value = "+" + s.code;
     var wn = document.getElementById("ed-wa-num"); if(wn) wn.value = s.num;
   }
   function cargarLinea(){
@@ -492,7 +502,12 @@ var PAISES = [["Afganistán","93"],["Albania","355"],["Alemania","49"],["Andorra
   function wire(){
     if(wired) return; wired = true;
     var sel = document.getElementById("ed-wa-code");
-    if(sel && !sel.options.length) sel.innerHTML = PAISES.map(function(p){ return '<option value="' + p[1] + '">' + "+" + p[1] + " \u00B7 " + p[0] + "</option>"; }).join("");
+    if(!document.getElementById("rg-cc-list")){
+      var dl = document.createElement("datalist"); dl.id = "rg-cc-list";
+      dl.innerHTML = PAISES.map(function(p){ return '<option value="+' + p[1] + '">' + p[0] + "</option>"; }).join("");
+      document.body.appendChild(dl);
+    }
+    if(sel) sel.addEventListener("blur", function(){ var d = (sel.value || "").replace(/\D/g, "") || "505"; sel.value = "+" + d; });
     document.querySelectorAll("#view-logged .acc-item > .acc-h").forEach(function(h){
       h.addEventListener("click", function(){ h.parentNode.classList.toggle("open"); });
     });
@@ -511,7 +526,7 @@ var PAISES = [["Afganistán","93"],["Albania","355"],["Alemania","49"],["Andorra
     });
     document.getElementById("btn-ed-wa").addEventListener("click", function(){
       var num = document.getElementById("ed-wa-num").value.trim();
-      var phone = num ? ("+" + document.getElementById("ed-wa-code").value + " " + num) : "";
+      var phone = num ? ("+" + (document.getElementById("ed-wa-code").value.replace(/\D/g, "") || "505") + " " + num) : "";
       rgApi("/cambiar-datos", "POST", { name: cur.name || "", lastname: cur.lastName || "", phone: phone }).then(function(res){
         if(res.ok){ cur.phone = phone; document.getElementById("d-phone").textContent = phone || "\u2014"; rgMsg("msg-wa", "ok", "Cambios guardados."); }
         else rgMsg("msg-wa", "err", (res.j && res.j.error) || "No se pudo guardar.");
