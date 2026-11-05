@@ -287,7 +287,7 @@ $("form-reg").addEventListener("submit", function(ev){
     btn.disabled = false; btn.textContent = "CREAR MI CUENTA";
     if(res.ok){
       if(res.j && res.j.token){ showLogged(res.j); return; }
-      setMsg("reg-msg", "ok", "¡Cuenta creada! Queda pendiente de activación: en cuanto confirmemos tu suscripción la activamos y podrás entrar al reproductor con este mismo correo y contraseña.");
+      setMsg("reg-msg", "ok", "¡Cuenta creada! Ya puedes iniciar sesión. En cuanto tu suscripción quede asociada a tu cuenta, podrás entrar al reproductor con este mismo correo y contraseña.");
       showSub("¿Quieres acelerar tu activación o adquirir tu suscripción ahora?");
       return;
     }
