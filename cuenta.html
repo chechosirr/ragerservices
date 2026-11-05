@@ -607,6 +607,18 @@ var PAISES = [["Afganistán","93"],["Albania","355"],["Alemania","49"],["Andorra
   document.getElementById("olvide-volver").addEventListener("click", function(ev){ ev.preventDefault(); closeOlvide(); });
 })();
 </script>
+
+<script>
+/* Menu solo con sesion iniciada: sin sesion, el boton de menu no abre el panel (igual que la puerta del inicio). */
+document.addEventListener('click', function(e){
+  var vl = document.getElementById('view-logged');
+  var logged = vl && !vl.classList.contains('hidden');
+  var tok = null; try{ tok = localStorage.getItem('rager_site_token'); }catch(err){}
+  if(e.target && e.target.closest && e.target.closest('#menuOpen') && !(logged && tok)){
+    e.preventDefault(); e.stopPropagation();
+  }
+}, true);
+</script>
 </body>
 </html>
 <script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="08d6c664-5731-4bfa-9a2f-e8f33c626dd7" data-app-host="app.netlify.com" data-account-tier="free"></script>

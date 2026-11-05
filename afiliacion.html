@@ -69,6 +69,16 @@ footer{text-align:center;color:#4b5363;font-size:12px;padding:20px;border-top:1p
 <footer>Rager TV · Programa de afiliación</footer>
 <script>(function(){var panel=document.getElementById('menuPanel'),open=document.getElementById('menuOpen'),close=document.getElementById('menuClose');function setMenu(show){panel.classList.toggle('open',show);document.body.style.overflow=show?'hidden':'';if(show)close.focus()}open.addEventListener('click',function(){setMenu(true)});close.addEventListener('click',function(){setMenu(false)});document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false)});panel.addEventListener('click',function(e){if(e.target===panel||e.target.tagName==='A')setMenu(false)})})();</script>
 <script>(function(){var lo=document.getElementById('menuLogout');if(!lo)return;var t='';try{t=localStorage.getItem('rager_site_token')||''}catch(e){}if(!t)return;fetch('https://puente.ragerservices.net/cuentas/me',{headers:{'Authorization':'Bearer '+t}}).then(function(r){if(r.ok){lo.style.display=''}else{try{localStorage.removeItem('rager_site_token')}catch(e){}}}).catch(function(){lo.style.display=''});lo.addEventListener('click',function(e){e.preventDefault();var fin=false;function done(){if(fin)return;fin=true;try{localStorage.removeItem('rager_site_token')}catch(err){}location.href='index.html'}try{fetch('https://puente.ragerservices.net/cuentas/logout',{method:'POST',headers:{'Authorization':'Bearer '+t,'Content-Type':'application/json'},body:'{}'}).then(done).catch(done)}catch(err){done()}setTimeout(done,1500)});})();</script>
+
+<script>
+/* Menu solo con sesion iniciada: sin sesion, el boton de menu no abre el panel (igual que la puerta del inicio). */
+document.addEventListener('click', function(e){
+  var tok = null; try{ tok = localStorage.getItem('rager_site_token'); }catch(err){}
+  if(e.target && e.target.closest && e.target.closest('#menuOpen') && !tok){
+    e.preventDefault(); e.stopPropagation();
+  }
+}, true);
+</script>
 </body>
 </html>
 <script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="08d6c664-5731-4bfa-9a2f-e8f33c626dd7" data-app-host="app.netlify.com" data-account-tier="free"></script>
