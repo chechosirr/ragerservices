@@ -147,7 +147,8 @@ body.rg-gated>#rg-welcome.rgc-hidden{display:none!important}
       <button type="submit">Enviar</button>
     </form>
     <div id="rgc-finbar" class="rgc-finbar rgc-hidden"><button id="rgc-fin" type="button">Finalizar chat</button></div>
-    <div id="rgc-closed" class="rgc-closed rgc-hidden"><b>Chat finalizado. Gracias por escribirnos.</b><p>Si necesitas algo más, puedes empezar un chat nuevo.</p><button id="rgc-again" type="button">Iniciar un chat nuevo</button></div>
+    <div id="rgc-closed" class="rgc-closed rgc-hidden"><b>Chat finalizado. Gracias por escribirnos.</b><p>Si necesitas algo más, puedes empezar un chat nuevo.</p></div>
+    <div id="rgc-againbar" class="rgc-finbar rgc-hidden"><button id="rgc-again" type="button">Iniciar un chat nuevo</button></div>
     <div id="rgc-hist" class="rgc-hist rgc-hidden"><button class="rgc-back" id="rgc-histback" type="button">← Volver al chat</button><div id="rgc-histlist"></div></div>
   </div>
 </div>
@@ -210,6 +211,7 @@ function syncNameRow(){
   var msgs = $("rgc-msgs"); if(msgs) msgs.classList.toggle("rgc-hidden", histOpen);
   var fb = $("rgc-finbar"); if(fb) fb.classList.toggle("rgc-hidden", !(started && activeConv() && !finalizada && !histOpen && !viewing));
   var cl = $("rgc-closed"); if(cl) cl.classList.toggle("rgc-hidden", !(started && finalizada && !histOpen && !viewing));
+  var ab = $("rgc-againbar"); if(ab) ab.classList.toggle("rgc-hidden", !(started && finalizada && !histOpen && !viewing));
   var vb = $("rgc-viewbar"); if(vb) vb.classList.toggle("rgc-hidden", !viewing);
   var hs = $("rgc-hist"); if(hs) hs.classList.toggle("rgc-hidden", !histOpen);
 }
