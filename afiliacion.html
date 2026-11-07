@@ -9,6 +9,10 @@
 body{background:#030609;color:#f8f8fa;font-family:Montserrat,Arial,sans-serif;min-height:100vh}
 header.top{background:#080b10;border-bottom:1px solid #191d26;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
 .logo{font-family:Anton,sans-serif;font-size:22px;letter-spacing:2px;color:#fff;text-decoration:none}
+/* Logo de cabecera UNIFICADO (orden de Sergio): en todas las
+   secciones exactamente la proporción inicial del sitio. */
+.top-logo{width:195px;height:57px;object-fit:contain;display:block}
+@media(max-width:760px){.top-logo{width:75px;height:52px}}
 .logo span{color:#ff201f}
 .back{color:#c9ced8;text-decoration:none;font-size:14px}
 .back:hover{color:#fff}
@@ -48,10 +52,10 @@ footer{text-align:center;color:#4b5363;font-size:12px;padding:20px;border-top:1p
 <body>
 <header class="top" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center">
   <span></span>
-  <a aria-label='Inicio' class='logo' href='/' style='justify-self:center'><img src="assets/logo.png" alt="Rager TV" style="height:38px;display:block"></a>
+  <a aria-label='Inicio' class='logo' href='index.html' style='justify-self:center'><img class="top-logo" src="assets/logo.png" alt="Rager TV"></a>
   <button class="menu-btn" id="menuOpen" aria-label="Abrir menú" style="justify-self:end"><span></span></button>
 </header>
-<div class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-label="Menú del sitio"><button class="menu-close" id="menuClose" aria-label="Cerrar menú">×</button><nav class="menu-links"><a href="index.html">Inicio</a><a href="cuenta.html">Mi cuenta</a><a href="index.html#guia">Guía de Instalación</a><a href="https://ver.ragerservices.net" target="_blank" rel="noopener">Ver contenido</a><a href="afiliacion.html">Afiliación</a><a href="#" id="menuLogout" style="display:none;color:#ff201f">Cerrar sesión</a></nav></div>
+<div class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-label="Menú del sitio"><button class="menu-close" id="menuClose" aria-label="Cerrar menú">×</button><nav class="menu-links"><a href="index.html">Inicio</a><a href="cuenta.html">Mi cuenta</a><a href="index.html#guia">Guía de Instalación</a><a href="https://ver.ragerservices.net" target="_blank" rel="noopener">Ver contenido</a><a href="afiliacion.html">Afiliación</a><a href="#" class="rg-chat-open">Ayuda</a><a href="#" id="menuAdminPanel" style="display:none">Panel</a><a href="https://puente.ragerservices.net/rager/chat/admin" id="menuAdminChat" style="display:none" target="_blank" rel="noopener">Chat</a><a href="#" id="menuLogout" style="display:none;color:#ff201f">Cerrar sesión</a></nav></div>
 
 <main>
   <h1>Afiliación <span>Rager</span></h1>
@@ -63,7 +67,7 @@ footer{text-align:center;color:#4b5363;font-size:12px;padding:20px;border-top:1p
     <div class="step"><span class="num">4</span><p>Cobra el 25% de cada pago que haga tu referido, mes tras mes.</p></div>
   </div>
   <p class="ejemplo">Ejemplo: 4 referidos en el plan Silver = $11.00 al mes para ti.</p>
-  <a class="cta" href="https://wa.me/15704698339?text=Hola%2C%20quiero%20mi%20c%C3%B3digo%20de%20afiliado%20de%20Rager" target="_blank" rel="noopener">Pedir mi código por WhatsApp</a>
+  <a class="cta rg-chat-open" href="#">Pedir mi código</a>
   <p class="nota">Cada afiliado recibe un código personal. Las comisiones se acumulan automáticamente con cada pago del referido y puedes consultar tu historial cuando quieras.</p>
 </main>
 <footer>Rager TV · Programa de afiliación</footer>
@@ -79,6 +83,167 @@ document.addEventListener('click', function(e){
   }
 }, true);
 </script>
+<!-- ===== RAGER CHAT + ADMIN (PREVIEW) ===== -->
+<style>
+.rg-chat-open{cursor:pointer}
+#rg-help-fab{position:fixed;right:18px;bottom:18px;z-index:900;background:#e0342f;color:#fff;border:0;border-radius:999px;padding:14px 22px;font-size:16px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.45);cursor:pointer;font-family:inherit}
+#rg-help-fab:hover{filter:brightness(1.12)}
+body.rg-gated>#rg-help-fab{display:block!important}
+#rg-chat{position:fixed;inset:0;z-index:2000;display:flex;align-items:flex-end;justify-content:flex-end;background:rgba(0,0,0,.45)}
+#rg-chat.rgc-hidden{display:none!important}
+body.rg-gated>#rg-chat{display:flex!important}
+body.rg-gated>#rg-chat.rgc-hidden{display:none!important}
+.rgc-box{background:#121218;color:#f2f2f5;width:min(430px,100vw);height:min(660px,100dvh);display:flex;flex-direction:column;border-radius:18px 18px 0 0;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.6);font-family:inherit}
+@media(min-width:700px){#rg-chat{padding:22px}.rgc-box{border-radius:18px}}
+.rgc-head{background:#e0342f;color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;font-weight:800;font-size:17px}
+.rgc-head button{background:transparent;border:0;color:#fff;font-size:24px;line-height:1;cursor:pointer;padding:2px 8px}
+.rgc-note{margin:0;padding:10px 16px;color:#b9b9c4;font-size:13.5px;border-bottom:1px solid #26262f}
+.rgc-msgs{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:8px;background:#0c0c10}
+.rgc-m{max-width:82%;padding:9px 12px;border-radius:14px;font-size:14.5px;line-height:1.45;white-space:pre-wrap;word-break:break-word}
+.rgc-m.v{align-self:flex-end;background:#e0342f;color:#fff;border-bottom-right-radius:4px}
+.rgc-m.a{align-self:flex-start;background:#23232c;color:#f2f2f5;border-bottom-left-radius:4px}
+.rgc-name{padding:14px 16px;border-top:1px solid #26262f;display:flex;gap:8px}
+.rgc-name input{flex:1;min-width:0;background:#1b1b22;border:1px solid #33333f;color:#fff;border-radius:10px;padding:11px 12px;font-size:15px}
+.rgc-name button,.rgc-form button{background:#e0342f;color:#fff;border:0;border-radius:10px;padding:11px 16px;font-weight:800;cursor:pointer;font-size:15px}
+.rgc-form{display:flex;gap:8px;padding:12px;border-top:1px solid #26262f}
+.rgc-form input{flex:1;min-width:0;background:#1b1b22;border:1px solid #33333f;color:#fff;border-radius:10px;padding:11px 12px;font-size:15px}
+.rgc-form.rgc-hidden,.rgc-name.rgc-hidden{display:none!important}
+#rg-welcome{position:fixed;inset:0;z-index:3000;background:#0c0c10;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
+#rg-welcome.rgc-hidden{display:none!important}
+body.rg-gated>#rg-welcome{display:flex!important}
+body.rg-gated>#rg-welcome.rgc-hidden{display:none!important}
+#rg-welcome .rgw-t{font-size:clamp(34px,8vw,58px);font-weight:900;letter-spacing:.01em}
+</style>
+<div id="rg-welcome" class="rgc-hidden" role="dialog" aria-label="Bienvenida de administrador"><div class="rgw-t">Bienvenido, señor.</div></div>
+<div id="rg-chat" class="rgc-hidden" role="dialog" aria-modal="true" aria-label="Chat de Rager">
+  <div class="rgc-box">
+    <div class="rgc-head"><span>Ayuda · Rager</span><button id="rgc-close" type="button" aria-label="Cerrar chat">×</button></div>
+    <p class="rgc-note">Escríbenos y te respondemos por aquí.</p>
+    <div id="rgc-msgs" class="rgc-msgs"></div>
+    <div id="rgc-name-row" class="rgc-name rgc-hidden">
+      <input id="rgc-name" type="text" placeholder="Tu nombre" autocomplete="name">
+      <button id="rgc-name-btn" type="button">Empezar</button>
+    </div>
+    <form id="rgc-form" class="rgc-form">
+      <input id="rgc-input" type="text" placeholder="Escribe tu mensaje…" autocomplete="off">
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+</div>
+<script>
+(function(){
+"use strict";
+var BASE = "https://puente.ragerservices.net/rager/chat";
+var ADMIN_PANEL = "https://puente.ragerservices.net/admin";
+var ADMIN_CHAT = "https://puente.ragerservices.net/rager/chat/admin";
+function $(id){ return document.getElementById(id); }
+function ls(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+var conv = ls("rager_chat_conv") || "";
+var myName = ls("rager_chat_name") || "";
+var seen = 0, timer = null;
+function render(m){
+  var box = $("rgc-msgs"); if(!box) return;
+  var d = document.createElement("div");
+  d.className = "rgc-m " + (m.f === "a" ? "a" : "v");
+  d.textContent = m.t || "";
+  box.appendChild(d); box.scrollTop = box.scrollHeight;
+}
+function poll(reset){
+  if(!conv) return Promise.resolve();
+  var after = reset ? 0 : seen;
+  return fetch(BASE + "/poll?conv=" + encodeURIComponent(conv) + "&after=" + after)
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if(!j || !j.ok) return;
+      if(reset){ $("rgc-msgs").innerHTML = ""; }
+      (j.messages || []).forEach(function(m){ render(m); });
+      if(typeof j.total === "number") seen = j.total;
+      else seen = after + (j.messages || []).length;
+    }).catch(function(){});
+}
+function syncNameRow(){
+  var row = $("rgc-name-row"); if(!row) return;
+  row.classList.toggle("rgc-hidden", !!myName);
+  var inp = $("rgc-input"); if(inp) inp.placeholder = myName ? "Escribe tu mensaje…" : "Primero escribe tu nombre arriba";
+}
+function openChat(){
+  var c = $("rg-chat"); if(!c) return;
+  c.classList.remove("rgc-hidden");
+  syncNameRow();
+  if(conv) poll(true);
+  if(timer) clearInterval(timer);
+  timer = setInterval(function(){ poll(false); }, 4000);
+  var f = myName ? $("rgc-input") : $("rgc-name");
+  if(f) setTimeout(function(){ try{ f.focus(); }catch(e){} }, 60);
+}
+function closeChat(){
+  var c = $("rg-chat"); if(c) c.classList.add("rgc-hidden");
+  if(timer){ clearInterval(timer); timer = null; }
+}
+window.RagerChatOpen = openChat;
+window.RagerChatClose = closeChat;
+document.addEventListener("click", function(e){
+  var t = e.target && e.target.closest ? e.target.closest(".rg-chat-open") : null;
+  if(t){ e.preventDefault(); openChat(); }
+});
+var cb = $("rgc-close"); if(cb) cb.addEventListener("click", closeChat);
+var chatEl = $("rg-chat"); if(chatEl) chatEl.addEventListener("click", function(e){ if(e.target === chatEl) closeChat(); });
+document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeChat(); });
+var nb = $("rgc-name-btn");
+function saveName(){
+  var v = ($("rgc-name").value || "").trim(); if(!v) return;
+  myName = v; lsSet("rager_chat_name", v); syncNameRow();
+  var inp = $("rgc-input"); if(inp) inp.focus();
+}
+if(nb) nb.addEventListener("click", saveName);
+var nameInp = $("rgc-name"); if(nameInp) nameInp.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); saveName(); } });
+var form = $("rgc-form");
+if(form) form.addEventListener("submit", function(e){
+  e.preventDefault();
+  if(!myName){ saveName(); if(!myName) return; }
+  var inp = $("rgc-input"); var text = (inp.value || "").trim(); if(!text) return;
+  inp.value = "";
+  var body = { name: myName, text: text };
+  if(conv) body.conv = conv;
+  fetch(BASE + "/send", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if(j && j.ok && j.conv && j.conv !== conv){ conv = j.conv; lsSet("rager_chat_conv", conv); seen = 0; poll(true); }
+      else poll(false);
+    }).catch(function(){});
+});
+/* ===== Administrador: bienvenida una vez por sesión + menú extra ===== */
+function showWelcome(){
+  try{ if(sessionStorage.getItem("rg_admin_welcomed")) return false; sessionStorage.setItem("rg_admin_welcomed", "1"); }catch(e){}
+  var w = $("rg-welcome"); if(!w) return false;
+  w.classList.remove("rgc-hidden");
+  setTimeout(function(){ w.classList.add("rgc-hidden"); }, 2800);
+  return true;
+}
+window.__rgShowWelcome = showWelcome;
+window.__rgAdminGo = function(token){
+  /* El panel /admin ES la página «Bienvenido, señor.»: ir directo,
+     sin pantalla pasajera de bienvenida en el sitio. */
+  location.href = ADMIN_PANEL + "#token=" + encodeURIComponent(token || "");
+};
+function applyAdmin(token){
+  var p = $("menuAdminPanel"), c = $("menuAdminChat");
+  if(p){ p.href = ADMIN_PANEL + "#token=" + encodeURIComponent(token || ""); p.style.display = ""; }
+  if(c){ c.href = ADMIN_CHAT; c.style.display = ""; }
+}
+window.__rgApplyAdmin = applyAdmin;
+var tok = ls("rager_site_token") || "";
+if(tok){
+  fetch("https://puente.ragerservices.net/cuentas/me", { headers: { "Authorization": "Bearer " + tok } })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){ if(j && j.role === "admin") applyAdmin(tok); })
+    .catch(function(){});
+}
+})();
+</script>
+<!-- ===== /RAGER CHAT + ADMIN (PREVIEW) ===== -->
+
 </body>
 </html>
 <script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="08d6c664-5731-4bfa-9a2f-e8f33c626dd7" data-app-host="app.netlify.com" data-account-tier="free"></script>

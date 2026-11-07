@@ -9,6 +9,10 @@
 body{background:#030609;color:#f8f8fa;font-family:Montserrat,Arial,sans-serif;min-height:100vh}
 header.top{background:#080b10;border-bottom:1px solid #191d26;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
 .logo{font-family:Anton,sans-serif;font-size:22px;letter-spacing:2px;color:#fff;text-decoration:none}
+/* Logo de cabecera UNIFICADO (orden de Sergio): en todas las
+   secciones exactamente la proporción inicial del sitio. */
+.top-logo{width:195px;height:57px;object-fit:contain;display:block}
+@media(max-width:760px){.top-logo{width:75px;height:52px}}
 .logo span{color:#ff201f}
 .back{color:#c9ced8;text-decoration:none;font-size:14px}
 .back:hover{color:#fff}
@@ -27,7 +31,7 @@ footer{text-align:center;color:#7d8593;font-size:13px;padding:24px 16px 40px}
 </head>
 <body>
 <header class="top">
-  <a class="logo" href="index.html">RAGER<span>.</span></a>
+  <a class="logo" href="index.html"><img class="top-logo" src="assets/logo.png" alt="Rager"></a>
   <a class="back" href="index.html">← Volver al inicio</a>
 </header>
 <main>
