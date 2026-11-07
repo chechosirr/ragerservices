@@ -177,13 +177,34 @@ function syncNameRow(){
   row.classList.toggle("rgc-hidden", !!myName || !!acct);
   var inp = $("rgc-input"); if(inp) inp.placeholder = myName ? "Escribe tu mensaje…" : "Primero escribe tu nombre arriba";
 }
+var opening = false;
+/* El saludo existe DESDE que el cliente entra al chat (orden de
+   Sergio): al entrar —con sesion, directo; el visitante, al tocar
+   «Empezar chat»— la conversacion se crea en el servidor con su
+   saludo ya puesto, sin esperar a su primer mensaje. */
+function ensureOpen(){
+  if(activeConv() || opening) return;
+  if(!myName && !acct) return;
+  opening = true;
+  var body = acct ? { auth: acct.token } : { name: myName };
+  fetch(BASE + "/open", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      opening = false;
+      if(j && j.ok && j.conv){
+        if(acct){ acctConv = j.conv; lsSet("rager_chat_conv_acc", acctConv); }
+        else { conv = j.conv; lsSet("rager_chat_conv", conv); }
+        seen = 0; poll(true);
+      }
+    }).catch(function(){ opening = false; });
+}
 function openChat(){
   var c = $("rg-chat"); if(!c) return;
   c.classList.remove("rgc-hidden");
   syncNameRow();
-  if(activeConv()) poll(true);
+  if(activeConv()) poll(true); else ensureOpen();
   if(timer) clearInterval(timer);
-  timer = setInterval(function(){ poll(false); }, 4000);
+  timer = setInterval(function(){ if(activeConv()) poll(false); else ensureOpen(); }, 4000);
   var f = (myName || acct) ? $("rgc-input") : $("rgc-name");
   if(f) setTimeout(function(){ try{ f.focus(); }catch(e){} }, 60);
 }
@@ -204,6 +225,7 @@ var nb = $("rgc-name-btn");
 function saveName(){
   var v = ($("rgc-name").value || "").trim(); if(!v) return;
   myName = v; lsSet("rager_chat_name", v); syncNameRow();
+  ensureOpen();
   var inp = $("rgc-input"); if(inp) inp.focus();
 }
 if(nb) nb.addEventListener("click", saveName);
