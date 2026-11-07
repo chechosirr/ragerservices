@@ -142,6 +142,15 @@ function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 var conv = ls("rager_chat_conv") || "";
 var myName = ls("rager_chat_name") || "";
 var seen = 0, timer = null;
+var acct = null;            /* cuenta con sesión: {name, email, token} */
+var acctConv = ls("rager_chat_conv_acc") || "";
+function siteToken(){
+  var t = ls("rager_site_token") || "";
+  if(t) return t;
+  try{ var s = JSON.parse(ls("rager_sess") || "null"); if(s && s.t) return s.t; }catch(e){}
+  return "";
+}
+function activeConv(){ return acct ? acctConv : conv; }
 function render(m){
   var box = $("rgc-msgs"); if(!box) return;
   var d = document.createElement("div");
@@ -150,9 +159,10 @@ function render(m){
   box.appendChild(d); box.scrollTop = box.scrollHeight;
 }
 function poll(reset){
-  if(!conv) return Promise.resolve();
+  var cid = activeConv();
+  if(!cid) return Promise.resolve();
   var after = reset ? 0 : seen;
-  return fetch(BASE + "/poll?conv=" + encodeURIComponent(conv) + "&after=" + after)
+  return fetch(BASE + "/poll?conv=" + encodeURIComponent(cid) + "&after=" + after)
     .then(function(r){ return r.json(); })
     .then(function(j){
       if(!j || !j.ok) return;
@@ -164,17 +174,17 @@ function poll(reset){
 }
 function syncNameRow(){
   var row = $("rgc-name-row"); if(!row) return;
-  row.classList.toggle("rgc-hidden", !!myName);
+  row.classList.toggle("rgc-hidden", !!myName || !!acct);
   var inp = $("rgc-input"); if(inp) inp.placeholder = myName ? "Escribe tu mensaje…" : "Primero escribe tu nombre arriba";
 }
 function openChat(){
   var c = $("rg-chat"); if(!c) return;
   c.classList.remove("rgc-hidden");
   syncNameRow();
-  if(conv) poll(true);
+  if(activeConv()) poll(true);
   if(timer) clearInterval(timer);
   timer = setInterval(function(){ poll(false); }, 4000);
-  var f = myName ? $("rgc-input") : $("rgc-name");
+  var f = (myName || acct) ? $("rgc-input") : $("rgc-name");
   if(f) setTimeout(function(){ try{ f.focus(); }catch(e){} }, 60);
 }
 function closeChat(){
@@ -201,15 +211,20 @@ var nameInp = $("rgc-name"); if(nameInp) nameInp.addEventListener("keydown", fun
 var form = $("rgc-form");
 if(form) form.addEventListener("submit", function(e){
   e.preventDefault();
-  if(!myName){ saveName(); if(!myName) return; }
+  if(!acct && !myName){ saveName(); if(!myName) return; }
   var inp = $("rgc-input"); var text = (inp.value || "").trim(); if(!text) return;
   inp.value = "";
-  var body = { name: myName, text: text };
-  if(conv) body.conv = conv;
+  var body;
+  if(acct){ body = { text: text, auth: acct.token }; if(acctConv) body.conv = acctConv; }
+  else { body = { name: myName, text: text }; if(conv) body.conv = conv; }
   fetch(BASE + "/send", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
     .then(function(r){ return r.json(); })
     .then(function(j){
-      if(j && j.ok && j.conv && j.conv !== conv){ conv = j.conv; lsSet("rager_chat_conv", conv); seen = 0; poll(true); }
+      if(j && j.ok && j.conv && j.conv !== activeConv()){
+        if(acct){ acctConv = j.conv; lsSet("rager_chat_conv_acc", acctConv); }
+        else { conv = j.conv; lsSet("rager_chat_conv", conv); }
+        seen = 0; poll(true);
+      }
       else poll(false);
     }).catch(function(){});
 });
@@ -233,11 +248,20 @@ function applyAdmin(token){
   if(c){ c.href = ADMIN_CHAT; c.style.display = ""; }
 }
 window.__rgApplyAdmin = applyAdmin;
-var tok = ls("rager_site_token") || "";
+var tok = siteToken();
 if(tok){
   fetch("https://puente.ragerservices.net/cuentas/me", { headers: { "Authorization": "Bearer " + tok } })
     .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(j){ if(j && j.role === "admin") applyAdmin(tok); })
+    .then(function(j){
+      if(j && j.email){
+        acct = { name: (((j.name || "") + " " + (j.lastName || "")).trim() || j.email), email: j.email, token: tok };
+        fetch(BASE + "/myconv", { headers: { "Authorization": "Bearer " + tok } })
+          .then(function(r){ return r.ok ? r.json() : null; })
+          .then(function(m){ if(m && m.conv){ acctConv = m.conv; lsSet("rager_chat_conv_acc", acctConv); } })
+          .catch(function(){});
+      }
+      if(j && j.role === "admin") applyAdmin(tok);
+    })
     .catch(function(){});
 }
 })();
