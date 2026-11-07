@@ -55,7 +55,7 @@ footer{text-align:center;color:#4b5363;font-size:12px;padding:20px;border-top:1p
   <a aria-label='Inicio' class='logo' href='index.html' style='justify-self:center'><img class="top-logo" src="assets/logo.png" alt="Rager TV"></a>
   <button class="menu-btn" id="menuOpen" aria-label="Abrir menú" style="justify-self:end"><span></span></button>
 </header>
-<div class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-label="Menú del sitio"><button class="menu-close" id="menuClose" aria-label="Cerrar menú">×</button><nav class="menu-links"><a href="index.html">Inicio</a><a href="cuenta.html">Mi cuenta</a><a href="index.html#guia">Guía de Instalación</a><a href="https://ver.ragerservices.net" target="_blank" rel="noopener">Ver contenido</a><a href="afiliacion.html">Afiliación</a><a href="#" class="rg-chat-open">Ayuda</a><a href="#" id="menuAdminPanel" style="display:none">Panel</a><a href="https://puente.ragerservices.net/rager/chat/admin" id="menuAdminChat" style="display:none" target="_blank" rel="noopener">Chat</a><a href="#" id="menuLogout" style="display:none;color:#ff201f">Cerrar sesión</a></nav></div>
+<div class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-label="Menú del sitio"><button class="menu-close" id="menuClose" aria-label="Cerrar menú">×</button><nav class="menu-links"><a href="index.html">Inicio</a><a href="cuenta.html">Mi cuenta</a><a href="index.html#guia">Guía de Instalación</a><a href="https://ver.ragerservices.net" target="_blank" rel="noopener">Ver contenido</a><a href="afiliacion.html">Afiliación</a><a href="#" class="rg-chat-open">Ayuda</a><a href="#" class="rg-chat-hist">Mis chats</a><a href="#" id="menuAdminPanel" style="display:none">Panel</a><a href="https://puente.ragerservices.net/rager/chat/admin" id="menuAdminChat" style="display:none" target="_blank" rel="noopener">Chat</a><a href="#" id="menuLogout" style="display:none;color:#ff201f">Cerrar sesión</a></nav></div>
 
 <main>
   <h1>Afiliación <span>Rager</span></h1>
@@ -106,6 +106,23 @@ body.rg-gated>#rg-chat.rgc-hidden{display:none!important}
 .rgc-name input{flex:1;min-width:0;background:#1b1b22;border:1px solid #33333f;color:#fff;border-radius:10px;padding:11px 12px;font-size:15px}
 .rgc-name button,.rgc-form button{background:#e0342f;color:#fff;border:0;border-radius:10px;padding:11px 16px;font-weight:800;cursor:pointer;font-size:15px}
 .rgc-form{display:flex;gap:8px;padding:12px;border-top:1px solid #26262f}
+.rgc-finbar{display:flex;padding:10px 12px;border-top:1px solid #26262f}
+.rgc-finbar button{flex:1;background:transparent;color:#ff9c9c;border:1px solid rgba(255,156,156,.45);border-radius:10px;padding:10px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}
+.rgc-closed{padding:22px 16px;text-align:center;border-top:1px solid #26262f}
+.rgc-closed b{font-size:16.5px}
+.rgc-closed p{color:#b9b9c4;font-size:13.5px;margin:8px 0 14px}
+.rgc-closed button{background:#e0342f;color:#fff;border:0;border-radius:10px;padding:11px 18px;font-weight:800;cursor:pointer;font-size:14.5px;font-family:inherit}
+.rgc-hist{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:9px;background:#0c0c10}
+.rgc-hi{text-align:left;background:#16161b;border:1px solid #2b2b33;border-radius:12px;padding:11px 13px;color:#f2f2f5;cursor:pointer;font-family:inherit;width:100%}
+.rgc-hi .d{font-size:11.5px;color:#b9b9c4}
+.rgc-hi .p{font-size:14px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rgc-tag{font-size:10.5px;font-weight:800;border-radius:999px;padding:1px 8px;margin-left:7px;background:#2b2b33;color:#b9b9c4}
+.rgc-tag.on{background:#9fd6a4;color:#12250f}
+.rgc-back{align-self:flex-start;background:none;border:0;color:#f2f2f5;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer;padding:2px 0}
+.rgc-viewbar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#16161b;border-bottom:1px solid #26262f;font-size:12.5px;color:#b9b9c4}
+.rgc-viewbar button{margin-left:auto;background:transparent;color:#f2f2f5;border:1px solid #33333f;border-radius:8px;padding:6px 10px;font-family:inherit;font-weight:700;font-size:12.5px;cursor:pointer}
+.rgc-finbar.rgc-hidden,.rgc-closed.rgc-hidden,.rgc-hist.rgc-hidden,.rgc-viewbar.rgc-hidden{display:none!important}
+#rgc-msgs.rgc-hidden{display:none!important}
 .rgc-form input{flex:1;min-width:0;background:#1b1b22;border:1px solid #33333f;color:#fff;border-radius:10px;padding:11px 12px;font-size:15px}
 .rgc-form.rgc-hidden,.rgc-name.rgc-hidden{display:none!important}
 #rg-welcome{position:fixed;inset:0;z-index:3000;background:#0c0c10;color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
@@ -119,6 +136,7 @@ body.rg-gated>#rg-welcome.rgc-hidden{display:none!important}
   <div class="rgc-box">
     <div class="rgc-head"><span>Ayuda · Rager</span><button id="rgc-close" type="button" aria-label="Cerrar chat">×</button></div>
     <p class="rgc-note">Escríbenos y te respondemos por aquí.</p>
+    <div id="rgc-viewbar" class="rgc-viewbar rgc-hidden"><span id="rgc-viewtxt">Conversación finalizada · solo lectura</span><button id="rgc-viewhist" type="button">← Mis chats</button></div>
     <div id="rgc-msgs" class="rgc-msgs"></div>
     <div id="rgc-name-row" class="rgc-name rgc-hidden">
       <input id="rgc-name" type="text" placeholder="Tu nombre" autocomplete="name">
@@ -128,6 +146,9 @@ body.rg-gated>#rg-welcome.rgc-hidden{display:none!important}
       <input id="rgc-input" type="text" placeholder="Escribe tu mensaje…" autocomplete="off">
       <button type="submit">Enviar</button>
     </form>
+    <div id="rgc-finbar" class="rgc-finbar rgc-hidden"><button id="rgc-fin" type="button">Finalizar chat</button></div>
+    <div id="rgc-closed" class="rgc-closed rgc-hidden"><b>Chat finalizado. Gracias por escribirnos.</b><p>Si necesitas algo más, puedes empezar un chat nuevo.</p><button id="rgc-again" type="button">Iniciar un chat nuevo</button></div>
+    <div id="rgc-hist" class="rgc-hist rgc-hidden"><button class="rgc-back" id="rgc-histback" type="button">← Volver al chat</button><div id="rgc-histlist"></div></div>
   </div>
 </div>
 <script>
@@ -144,6 +165,13 @@ var myName = ls("rager_chat_name") || "";
 var seen = 0, timer = null;
 var acct = null;            /* cuenta con sesión: {name, email, token} */
 var acctConv = ls("rager_chat_conv_acc") || "";
+/* Registro local de conversaciones de ESTE dispositivo («Mis
+   chats»): cada conversación que el cliente usa queda anotada;
+   las finalizadas siguen en la lista para poder releerlas. */
+var convIds = []; try{ convIds = JSON.parse(ls("rager_chat_convs") || "[]") || []; }catch(e){ convIds = []; }
+function noteConv(id){ if(!id) return; if(convIds.indexOf(id) < 0){ convIds.push(id); if(convIds.length > 30) convIds = convIds.slice(-30); lsSet("rager_chat_convs", JSON.stringify(convIds)); } }
+if(conv) noteConv(conv); if(acctConv) noteConv(acctConv);
+var finalizada = false, viewing = null, histOpen = false;
 function siteToken(){
   var t = ls("rager_site_token") || "";
   if(t) return t;
@@ -160,7 +188,7 @@ function render(m){
 }
 function poll(reset){
   var cid = activeConv();
-  if(!cid) return Promise.resolve();
+  if(!cid || viewing) return Promise.resolve();
   var after = reset ? 0 : seen;
   return fetch(BASE + "/poll?conv=" + encodeURIComponent(cid) + "&after=" + after)
     .then(function(r){ return r.json(); })
@@ -170,12 +198,20 @@ function poll(reset){
       (j.messages || []).forEach(function(m){ render(m); });
       if(typeof j.total === "number") seen = j.total;
       else seen = after + (j.messages || []).length;
+      if(j.finalizada) showClosed();
     }).catch(function(){});
 }
 function syncNameRow(){
-  var row = $("rgc-name-row"); if(!row) return;
-  row.classList.toggle("rgc-hidden", !!myName || !!acct);
+  var row = $("rgc-name-row");
+  var started = !!myName || !!acct;
+  if(row) row.classList.toggle("rgc-hidden", started || histOpen || !!viewing);
   var inp = $("rgc-input"); if(inp) inp.placeholder = myName ? "Escribe tu mensaje…" : "Primero escribe tu nombre arriba";
+  var form = $("rgc-form"); if(form) form.classList.toggle("rgc-hidden", !started || finalizada || histOpen || !!viewing);
+  var msgs = $("rgc-msgs"); if(msgs) msgs.classList.toggle("rgc-hidden", histOpen);
+  var fb = $("rgc-finbar"); if(fb) fb.classList.toggle("rgc-hidden", !(started && activeConv() && !finalizada && !histOpen && !viewing));
+  var cl = $("rgc-closed"); if(cl) cl.classList.toggle("rgc-hidden", !(started && finalizada && !histOpen && !viewing));
+  var vb = $("rgc-viewbar"); if(vb) vb.classList.toggle("rgc-hidden", !viewing);
+  var hs = $("rgc-hist"); if(hs) hs.classList.toggle("rgc-hidden", !histOpen);
 }
 var opening = false;
 /* El saludo existe DESDE que el cliente entra al chat (orden de
@@ -192,8 +228,8 @@ function ensureOpen(){
     .then(function(j){
       opening = false;
       if(j && j.ok && j.conv){
-        if(acct){ acctConv = j.conv; lsSet("rager_chat_conv_acc", acctConv); }
-        else { conv = j.conv; lsSet("rager_chat_conv", conv); }
+        if(acct){ acctConv = j.conv; noteConv(acctConv); lsSet("rager_chat_conv_acc", acctConv); }
+        else { conv = j.conv; noteConv(conv); lsSet("rager_chat_conv", conv); }
         seen = 0; poll(true);
       }
     }).catch(function(){ opening = false; });
@@ -201,6 +237,7 @@ function ensureOpen(){
 function openChat(){
   var c = $("rg-chat"); if(!c) return;
   c.classList.remove("rgc-hidden");
+  histOpen = false; viewing = null;
   syncNameRow();
   if(activeConv()) poll(true); else ensureOpen();
   if(timer) clearInterval(timer);
@@ -212,6 +249,77 @@ function closeChat(){
   var c = $("rg-chat"); if(c) c.classList.add("rgc-hidden");
   if(timer){ clearInterval(timer); timer = null; }
 }
+/* ===== Finalizar chat / chat nuevo / «Mis chats» (registro) ===== */
+function showClosed(){ if(finalizada) return; finalizada = true; syncNameRow(); }
+function doFinalizar(){
+  var cid = activeConv(); if(!cid || finalizada) return;
+  fetch(BASE + "/finalizar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ conv: cid }) })
+    .catch(function(){})
+    .then(function(){ showClosed(); });
+}
+function newChat(){
+  finalizada = false; viewing = null; histOpen = false; seen = 0;
+  if(acct){ acctConv = ""; try{ localStorage.removeItem("rager_chat_conv_acc"); }catch(e){} }
+  else { conv = ""; try{ localStorage.removeItem("rager_chat_conv"); }catch(e){} }
+  var box = $("rgc-msgs"); if(box) box.innerHTML = "";
+  syncNameRow(); ensureOpen();
+}
+function fmtFecha(ts){ if(!ts) return ""; var d = new Date(ts < 1e12 ? ts * 1000 : ts); if(isNaN(d)) return ""; try{ return d.toLocaleDateString("es", { day: "numeric", month: "short" }) + " · " + d.toLocaleTimeString("es", { hour: "numeric", minute: "2-digit" }); }catch(e){ return ""; } }
+function loadHist(){
+  var list = $("rgc-histlist"); if(!list) return;
+  list.innerHTML = "<p style='color:#b9b9c4;font-size:14px;text-align:center;padding:12px 4px'>Cargando…</p>";
+  var p;
+  if(acct) p = fetch(BASE + "/myhistory", { headers: { "Authorization": "Bearer " + acct.token } }).then(function(r){ return r.json(); });
+  else p = fetch(BASE + "/myhistory", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ids: convIds }) }).then(function(r){ return r.json(); });
+  p.then(function(j){
+    var chats = (j && j.chats) || [];
+    if(!chats.length){ list.innerHTML = "<p style='color:#b9b9c4;font-size:14px;text-align:center;padding:12px 4px'>Todavía no tienes chats guardados.</p>"; return; }
+    list.innerHTML = "";
+    chats.forEach(function(it){
+      var b = document.createElement("button"); b.type = "button"; b.className = "rgc-hi";
+      var d1 = document.createElement("span"); d1.className = "d"; d1.textContent = fmtFecha(it.updated || it.created);
+      var tg = document.createElement("span"); tg.className = "rgc-tag" + (it.activa && !it.finalizada ? " on" : ""); tg.textContent = it.finalizada ? "Finalizada" : (it.activa ? "Activa" : "Anterior");
+      var p1 = document.createElement("div"); p1.className = "p"; p1.textContent = (it.last_f === "v" ? "Tú: " : "") + (it.last || "");
+      b.appendChild(d1); b.appendChild(tg); b.appendChild(p1);
+      b.addEventListener("click", function(){ openHistItem(it); });
+      list.appendChild(b);
+    });
+  }).catch(function(){ list.innerHTML = "<p style='color:#b9b9c4;font-size:14px;text-align:center;padding:12px 4px'>No se pudo cargar tu registro.</p>"; });
+}
+function openHistory(){
+  var c = $("rg-chat"); if(!c) return;
+  c.classList.remove("rgc-hidden");
+  histOpen = true; viewing = null;
+  syncNameRow(); loadHist();
+  if(timer) clearInterval(timer);
+  timer = setInterval(function(){ if(activeConv() && !viewing) poll(false); else ensureOpen(); }, 4000);
+}
+function closeHistToChat(){
+  histOpen = false; viewing = null; seen = 0;
+  var box = $("rgc-msgs"); if(box) box.innerHTML = "";
+  syncNameRow();
+  if(activeConv()) poll(true); else ensureOpen();
+}
+function openHistItem(it){
+  if(it.conv === activeConv() && !it.finalizada){ closeHistToChat(); return; }
+  viewing = it.conv; histOpen = false;
+  var vt = $("rgc-viewtxt"); if(vt) vt.textContent = it.finalizada ? "Conversación finalizada · solo lectura" : "Conversación anterior · solo lectura";
+  syncNameRow();
+  var box = $("rgc-msgs"); if(box) box.innerHTML = "";
+  fetch(BASE + "/poll?conv=" + encodeURIComponent(it.conv) + "&after=0")
+    .then(function(r){ return r.json(); })
+    .then(function(j){ if(j && j.ok){ (j.messages || []).forEach(render); } })
+    .catch(function(){});
+}
+window.RagerChatHistory = openHistory;
+var finB = $("rgc-fin"); if(finB) finB.addEventListener("click", doFinalizar);
+var agB = $("rgc-again"); if(agB) agB.addEventListener("click", newChat);
+var hbB = $("rgc-histback"); if(hbB) hbB.addEventListener("click", closeHistToChat);
+var vhB = $("rgc-viewhist"); if(vhB) vhB.addEventListener("click", function(){ openHistory(); });
+document.addEventListener("click", function(e){
+  var t = e.target && e.target.closest ? e.target.closest(".rg-chat-hist") : null;
+  if(t){ e.preventDefault(); openHistory(); }
+});
 window.RagerChatOpen = openChat;
 window.RagerChatClose = closeChat;
 document.addEventListener("click", function(e){
@@ -240,11 +348,13 @@ if(form) form.addEventListener("submit", function(e){
   if(acct){ body = { text: text, auth: acct.token }; if(acctConv) body.conv = acctConv; }
   else { body = { name: myName, text: text }; if(conv) body.conv = conv; }
   fetch(BASE + "/send", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
-    .then(function(r){ return r.json(); })
-    .then(function(j){
+    .then(function(r){ return r.json().then(function(j){ return { status: r.status, j: j }; }); })
+    .then(function(res){
+      if(res.status === 409){ showClosed(); return; }
+      var j = res.j;
       if(j && j.ok && j.conv && j.conv !== activeConv()){
-        if(acct){ acctConv = j.conv; lsSet("rager_chat_conv_acc", acctConv); }
-        else { conv = j.conv; lsSet("rager_chat_conv", conv); }
+        if(acct){ acctConv = j.conv; noteConv(acctConv); lsSet("rager_chat_conv_acc", acctConv); }
+        else { conv = j.conv; noteConv(conv); lsSet("rager_chat_conv", conv); }
         seen = 0; poll(true);
       }
       else poll(false);
@@ -290,6 +400,23 @@ if(tok){
 </script>
 <!-- ===== /RAGER CHAT + ADMIN (PREVIEW) ===== -->
 
+
+<script>
+/* Sesión y botón «atrás» (corrección 2026-11-07): al volver, el navegador
+   puede restaurar esta página desde su caché tal como se dejó —con la
+   sesión ya cerrada en otra sección— y se vería «con sesión» sin estarlo.
+   Al volver a mostrarse, se compara la sesión actual con la que había al
+   cargarse; si cambió, la página se recarga y muestra el estado real. */
+(function(){
+  var stamp = null;
+  function cur(){ try{ return localStorage.getItem('rager_site_token') || ''; }catch(e){ return ''; } }
+  window.addEventListener('pageshow', function(e){
+    if(!e.persisted){ stamp = cur(); return; }
+    if(stamp === null){ stamp = cur(); return; }
+    if(cur() !== stamp) location.reload();
+  });
+})();
+</script>
 </body>
 </html>
 <script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="08d6c664-5731-4bfa-9a2f-e8f33c626dd7" data-app-host="app.netlify.com" data-account-tier="free"></script>
