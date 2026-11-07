@@ -30,12 +30,12 @@
 
 <style>
 /* ===== Apertura con el logo y puerta de sesión (2026-11-04, pedido de Sergio): el logo del ojo en el centro 3 s y vuela a su lugar; sin sesión aparece suave la sección de inicio de sesión y el menú no funciona hasta entrar; al entrar, a la página principal ===== */
-#rg-splash{position:fixed;inset:0;z-index:200;background:#030609;display:flex;align-items:center;justify-content:center;cursor:pointer;animation:rgKill .6s ease 9.5s both}
+#rg-splash{position:fixed;inset:0;z-index:1500;background:#030609;display:flex;align-items:center;justify-content:center;cursor:pointer;animation:rgKill .6s ease 9.5s both}
 #rg-splash-logo{width:min(53vw,300px);height:auto;object-fit:contain;transition:transform .9s ease}
 #rg-splash.rg-fading{opacity:0;transition:opacity .35s ease;pointer-events:none}
 @keyframes rgKill{to{opacity:0;visibility:hidden}}
 body.rg-gated{overflow:hidden}
-body.rg-gated>*:not(.topbar):not(#menuPanel):not(#rg-splash):not(#rg-login):not(script){display:none!important}
+body.rg-gated>*:not(.topbar):not(#menuPanel):not(#rg-splash):not(#rg-login):not(#rg-help-fab):not(#rg-chat):not(script){display:none!important}
 .rg-hidden{display:none!important}
 #rg-login{position:fixed;inset:0;z-index:30;overflow:auto;background:#030609;padding:176px 16px 60px;font-family:Montserrat,Arial,sans-serif;color:#f8f8fa}
 @media(max-width:760px){#rg-login{padding-top:100px}}
