@@ -55,7 +55,7 @@ footer{text-align:center;color:#4b5363;font-size:12px;padding:20px;border-top:1p
   <a aria-label='Inicio' class='logo' href='index.html' style='justify-self:center'><img class="top-logo" src="assets/logo.png" alt="Rager TV"></a>
   <button class="menu-btn" id="menuOpen" aria-label="Abrir menú" style="justify-self:end"><span></span></button>
 </header>
-<div class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-label="Menú del sitio"><button class="menu-close" id="menuClose" aria-label="Cerrar menú">×</button><nav class="menu-links"><a href="index.html">Inicio</a><a href="cuenta.html">Mi cuenta</a><a href="index.html#guia">Guía de Instalación</a><a href="https://ver.ragerservices.net" target="_blank" rel="noopener">Ver contenido</a><a href="afiliacion.html">Afiliación</a><a href="#" class="rg-chat-open">Ayuda</a><a href="#" class="rg-chat-hist">Mis chats</a><a href="#" id="menuAdminPanel" style="display:none">Panel</a><a href="https://puente.ragerservices.net/rager/chat/admin" id="menuAdminChat" style="display:none" target="_blank" rel="noopener">Chat</a><a href="#" id="menuLogout" style="display:none;color:#ff201f">Cerrar sesión</a></nav></div>
+<div class="menu-panel" id="menuPanel" role="dialog" aria-modal="true" aria-label="Menú del sitio"><button class="menu-close" id="menuClose" aria-label="Cerrar menú">×</button><nav class="menu-links"><a href="index.html">Inicio</a><a href="cuenta.html">Mi cuenta</a><a href="index.html#guia">Guía de Instalación</a><a href="https://ver.ragerservices.net" target="_blank" rel="noopener">Ver contenido</a><a href="afiliacion.html">Afiliación</a><a href="#" class="rg-chat-open rg-chat-ayuda">Ayuda</a><a href="#" class="rg-chat-hist">Mis chats</a><a href="#" id="menuAdminPanel" style="display:none">Panel</a><a href="https://puente.ragerservices.net/rager/chat/admin" id="menuAdminChat" style="display:none" target="_blank" rel="noopener">Chat</a><a href="#" id="menuLogout" style="display:none;color:#ff201f">Cerrar sesión</a></nav></div>
 
 <main>
   <h1>Afiliación <span>Rager</span></h1>
@@ -123,6 +123,11 @@ body.rg-gated>#rg-chat.rgc-hidden{display:none!important}
 .rgc-viewbar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#16161b;border-bottom:1px solid #26262f;font-size:12.5px;color:#b9b9c4}
 .rgc-viewbar button{margin-left:auto;background:transparent;color:#f2f2f5;border:1px solid #33333f;border-radius:8px;padding:6px 10px;font-family:inherit;font-weight:700;font-size:12.5px;cursor:pointer}
 .rgc-finbar.rgc-hidden,.rgc-closed.rgc-hidden,.rgc-hist.rgc-hidden,.rgc-viewbar.rgc-hidden{display:none!important}
+.rgc-lobby{padding:22px 16px;text-align:center;border-top:1px solid #26262f}
+.rgc-lobby p{color:#d7d7de;font-size:15px;line-height:1.5;margin:0 0 16px}
+.rgc-lobby button{background:transparent;color:#7db3f0;border:1px solid rgba(125,179,240,.55);border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer;font-size:15px;font-family:inherit;width:100%}
+.rgc-lobby.rgc-hidden{display:none!important}
+.rgc-histnew{margin-top:auto;background:transparent;color:#7db3f0;border:1px solid rgba(125,179,240,.55);border-radius:10px;padding:10px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit;width:100%}
 #rgc-msgs.rgc-hidden{display:none!important}
 .rgc-form input{flex:1;min-width:0;background:#1b1b22;border:1px solid #33333f;color:#fff;border-radius:10px;padding:11px 12px;font-size:15px}
 .rgc-form.rgc-hidden,.rgc-name.rgc-hidden{display:none!important}
@@ -137,6 +142,10 @@ body.rg-gated>#rg-welcome.rgc-hidden{display:none!important}
   <div class="rgc-box">
     <div class="rgc-head"><span>Ayuda · Rager</span><button id="rgc-close" type="button" aria-label="Cerrar chat">×</button></div>
     <p class="rgc-note">Escríbenos y te respondemos por aquí.</p>
+    <div id="rgc-lobby" class="rgc-lobby rgc-hidden">
+      <p>Para hablar con nosotros, toca el botón <b>«Iniciar un chat nuevo»</b>: ahí se abre tu conversación y te respondemos por aquí.</p>
+      <button id="rgc-lobbynew" type="button">Iniciar un chat nuevo</button>
+    </div>
     <div id="rgc-viewbar" class="rgc-viewbar rgc-hidden"><span id="rgc-viewtxt">Conversación finalizada · solo lectura</span><button id="rgc-viewhist" type="button">← Mis chats</button></div>
     <div id="rgc-msgs" class="rgc-msgs"></div>
     <div id="rgc-name-row" class="rgc-name rgc-hidden">
@@ -150,7 +159,7 @@ body.rg-gated>#rg-welcome.rgc-hidden{display:none!important}
     <div id="rgc-finbar" class="rgc-finbar rgc-hidden"><button id="rgc-fin" type="button">Finalizar chat</button></div>
     <div id="rgc-closed" class="rgc-closed rgc-hidden"><b>Chat finalizado. Gracias por escribirnos.</b><p>Si necesitas algo más, puedes empezar un chat nuevo.</p></div>
     <div id="rgc-againbar" class="rgc-finbar rgc-hidden"><button id="rgc-again" type="button">Iniciar un chat nuevo</button></div>
-    <div id="rgc-hist" class="rgc-hist rgc-hidden"><button class="rgc-back" id="rgc-histback" type="button">← Volver al chat</button><div id="rgc-histlist"></div></div>
+    <div id="rgc-hist" class="rgc-hist rgc-hidden"><button class="rgc-back" id="rgc-histback" type="button">← Volver al chat</button><div id="rgc-histlist"></div><button class="rgc-histnew" id="rgc-histnew" type="button">Iniciar un chat nuevo</button></div>
   </div>
 </div>
 <script>
@@ -173,7 +182,7 @@ var acctConv = ls("rager_chat_conv_acc") || "";
 var convIds = []; try{ convIds = JSON.parse(ls("rager_chat_convs") || "[]") || []; }catch(e){ convIds = []; }
 function noteConv(id){ if(!id) return; if(convIds.indexOf(id) < 0){ convIds.push(id); if(convIds.length > 30) convIds = convIds.slice(-30); lsSet("rager_chat_convs", JSON.stringify(convIds)); } }
 if(conv) noteConv(conv); if(acctConv) noteConv(acctConv);
-var finalizada = false, viewing = null, histOpen = false;
+var finalizada = false, viewing = null, histOpen = false, lobby = false;
 function siteToken(){
   var t = ls("rager_site_token") || "";
   if(t) return t;
@@ -205,7 +214,19 @@ function poll(reset){
 }
 function syncNameRow(){
   var row = $("rgc-name-row");
+  var lb = $("rgc-lobby"); if(lb) lb.classList.toggle("rgc-hidden", !lobby);
   var started = !!myName || !!acct;
+  if(lobby){
+    if(row) row.classList.add("rgc-hidden");
+    var form0 = $("rgc-form"); if(form0) form0.classList.add("rgc-hidden");
+    var msgs0 = $("rgc-msgs"); if(msgs0) msgs0.classList.add("rgc-hidden");
+    var fb0 = $("rgc-finbar"); if(fb0) fb0.classList.add("rgc-hidden");
+    var cl0 = $("rgc-closed"); if(cl0) cl0.classList.add("rgc-hidden");
+    var ab0 = $("rgc-againbar"); if(ab0) ab0.classList.add("rgc-hidden");
+    var vb0 = $("rgc-viewbar"); if(vb0) vb0.classList.add("rgc-hidden");
+    var hs0 = $("rgc-hist"); if(hs0) hs0.classList.add("rgc-hidden");
+    return;
+  }
   if(row) row.classList.toggle("rgc-hidden", started || histOpen || !!viewing);
   var inp = $("rgc-input"); if(inp) inp.placeholder = myName ? "Escribe tu mensaje…" : "Primero escribe tu nombre arriba";
   var form = $("rgc-form"); if(form) form.classList.toggle("rgc-hidden", !started || finalizada || histOpen || !!viewing);
@@ -240,11 +261,31 @@ function ensureOpen(){
 function openChat(){
   var c = $("rg-chat"); if(!c) return;
   c.classList.remove("rgc-hidden");
-  histOpen = false; viewing = null;
+  histOpen = false; viewing = null; lobby = false;
   syncNameRow();
   if(activeConv()) poll(true); else ensureOpen();
   if(timer) clearInterval(timer);
   timer = setInterval(function(){ if(activeConv()) poll(false); else ensureOpen(); }, 4000);
+  var f = (myName || acct) ? $("rgc-input") : $("rgc-name");
+  if(f) setTimeout(function(){ try{ f.focus(); }catch(e){} }, 60);
+}
+/* Entrada «Ayuda» (orden de Sergio): picar Ayuda NO crea ningún
+   chat; primero se enseña este vestíbulo y la conversación solo
+   se crea o se abre cuando el cliente toca «Iniciar un chat
+   nuevo». Las demás entradas al chat no pasan por aquí. */
+function openLobby(){
+  var c = $("rg-chat"); if(!c) return;
+  c.classList.remove("rgc-hidden");
+  histOpen = false; viewing = null; lobby = true;
+  syncNameRow();
+  if(timer) clearInterval(timer);
+  timer = setInterval(function(){ if(lobby) return; if(activeConv()) poll(false); else ensureOpen(); }, 4000);
+  var b = $("rgc-lobbynew"); if(b) setTimeout(function(){ try{ b.focus(); }catch(e){} }, 60);
+}
+function lobbyStart(){
+  lobby = false;
+  syncNameRow();
+  if(activeConv()){ seen = 0; poll(true); } else ensureOpen();
   var f = (myName || acct) ? $("rgc-input") : $("rgc-name");
   if(f) setTimeout(function(){ try{ f.focus(); }catch(e){} }, 60);
 }
@@ -292,7 +333,7 @@ function loadHist(){
 function openHistory(){
   var c = $("rg-chat"); if(!c) return;
   c.classList.remove("rgc-hidden");
-  histOpen = true; viewing = null;
+  histOpen = true; viewing = null; lobby = false;
   syncNameRow(); loadHist();
   if(timer) clearInterval(timer);
   timer = setInterval(function(){ if(activeConv() && !viewing) poll(false); else ensureOpen(); }, 4000);
@@ -317,6 +358,8 @@ function openHistItem(it){
 window.RagerChatHistory = openHistory;
 var finB = $("rgc-fin"); if(finB) finB.addEventListener("click", doFinalizar);
 var agB = $("rgc-again"); if(agB) agB.addEventListener("click", newChat);
+var lnB = $("rgc-lobbynew"); if(lnB) lnB.addEventListener("click", lobbyStart);
+var hnB = $("rgc-histnew"); if(hnB) hnB.addEventListener("click", newChat);
 var hbB = $("rgc-histback"); if(hbB) hbB.addEventListener("click", closeHistToChat);
 var vhB = $("rgc-viewhist"); if(vhB) vhB.addEventListener("click", function(){ openHistory(); });
 document.addEventListener("click", function(e){
@@ -324,10 +367,11 @@ document.addEventListener("click", function(e){
   if(t){ e.preventDefault(); openHistory(); }
 });
 window.RagerChatOpen = openChat;
+window.RagerChatAyuda = openLobby;
 window.RagerChatClose = closeChat;
 document.addEventListener("click", function(e){
   var t = e.target && e.target.closest ? e.target.closest(".rg-chat-open") : null;
-  if(t){ e.preventDefault(); openChat(); }
+  if(t){ e.preventDefault(); if(t.closest(".rg-chat-ayuda")) openLobby(); else openChat(); }
 });
 var cb = $("rgc-close"); if(cb) cb.addEventListener("click", closeChat);
 var chatEl = $("rg-chat"); if(chatEl) chatEl.addEventListener("click", function(e){ if(e.target === chatEl) closeChat(); });
