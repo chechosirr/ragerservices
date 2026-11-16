@@ -1,0 +1,19 @@
+name: Copiar rager.apk a stream-play-plus.apk
+on:
+  workflow_dispatch:
+jobs:
+  copiar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copiar APK
+        run: cp assets/rager.apk assets/stream-play-plus.apk
+      - name: Confirmar cambio
+        run: |
+          git config user.name "chechosirr"
+          git config user.email "chechosirr@users.noreply.github.com"
+          git add assets/stream-play-plus.apk
+          git diff --cached --quiet || git commit -m "App Rager v1.2.11 (versionCode 14): corrección de cierres, RAGER se escribe al entrar y app sin sonidos"
+          git push
